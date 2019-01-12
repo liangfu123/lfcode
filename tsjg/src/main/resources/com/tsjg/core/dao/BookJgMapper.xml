@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsjg.core.dao.BookJgMapper">
+  <resultMap id="BaseResultMap" type="com.tsjg.core.bean.BookJg">
+    <id column="bookjg_id" jdbcType="INTEGER" property="bookjgId" />
+    <result column="bookjg_time" jdbcType="TIMESTAMP" property="bookjgTime" />
+    <result column="isbn" jdbcType="VARCHAR" property="isbn" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="isget" jdbcType="INTEGER" property="isget" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    bookjg_id, bookjg_time, isbn, user_id, isget
+  </sql>
+  
+  <!-- ******************************************* -->
+  
+  <update id="updateBookIsget" parameterType="java.lang.Integer">
+  	UPDATE book_jg 
+	SET isget = 1
+	WHERE isbn IN
+	<foreach collection="array" item="isbn" open="(" close=")" separator=",">
+		#{isbn}
+	</foreach>
+  </update>
+  
+  <!-- ******************************************* -->
+  
+  <select id="selectByExample" parameterType="com.tsjg.core.bean.BookJgExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from book_jg
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from book_jg
+    where bookjg_id = #{bookjgId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from book_jg
+    where bookjg_id = #{bookjgId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.tsjg.core.bean.BookJgExample">
+    delete from book_jg
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.tsjg.core.bean.BookJg">
+    insert into book_jg (bookjg_id, bookjg_time, isbn, 
+      user_id, isget)
+    values (#{bookjgId,jdbcType=INTEGER}, #{bookjgTime,jdbcType=TIMESTAMP}, #{isbn,jdbcType=VARCHAR}, 
+      #{userId,jdbcType=INTEGER}, #{isget,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tsjg.core.bean.BookJg">
+    insert into book_jg
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="bookjgId != null">
+        bookjg_id,
+      </if>
+      <if test="bookjgTime != null">
+        bookjg_time,
+      </if>
+      <if test="isbn != null">
+        isbn,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="isget != null">
+        isget,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="bookjgId != null">
+        #{bookjgId,jdbcType=INTEGER},
+      </if>
+      <if test="bookjgTime != null">
+        #{bookjgTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isbn != null">
+        #{isbn,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="isget != null">
+        #{isget,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.tsjg.core.bean.BookJgExample" resultType="java.lang.Long">
+    select count(*) from book_jg
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update book_jg
+    <set>
+      <if test="record.bookjgId != null">
+        bookjg_id = #{record.bookjgId,jdbcType=INTEGER},
+      </if>
+      <if test="record.bookjgTime != null">
+        bookjg_time = #{record.bookjgTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isbn != null">
+        isbn = #{record.isbn,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.isget != null">
+        isget = #{record.isget,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update book_jg
+    set bookjg_id = #{record.bookjgId,jdbcType=INTEGER},
+      bookjg_time = #{record.bookjgTime,jdbcType=TIMESTAMP},
+      isbn = #{record.isbn,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      isget = #{record.isget,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tsjg.core.bean.BookJg">
+    update book_jg
+    <set>
+      <if test="bookjgTime != null">
+        bookjg_time = #{bookjgTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isbn != null">
+        isbn = #{isbn,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="isget != null">
+        isget = #{isget,jdbcType=INTEGER},
+      </if>
+    </set>
+    where bookjg_id = #{bookjgId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tsjg.core.bean.BookJg">
+    update book_jg
+    set bookjg_time = #{bookjgTime,jdbcType=TIMESTAMP},
+      isbn = #{isbn,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER},
+      isget = #{isget,jdbcType=INTEGER}
+    where bookjg_id = #{bookjgId,jdbcType=INTEGER}
+  </update>
+</mapper>

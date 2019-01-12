@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsjg.core.dao.BookMapper">
+  <resultMap id="BaseResultMap" type="com.tsjg.core.bean.Book">
+    <result column="book_id" jdbcType="INTEGER" property="bookId" />
+    <result column="book_name" jdbcType="VARCHAR" property="bookName" />
+    <result column="book_author" jdbcType="VARCHAR" property="bookAuthor" />
+    <result column="book_summary" jdbcType="VARCHAR" property="bookSummary" />
+    <result column="book_publish" jdbcType="VARCHAR" property="bookPublish" />
+    <result column="book_pubtime" jdbcType="VARCHAR" property="bookPubtime" />
+    <result column="isbn" jdbcType="VARCHAR" property="isbn" />
+    <result column="book_numberpage" jdbcType="VARCHAR" property="bookNumberpage" />
+    <result column="book_price" jdbcType="VARCHAR" property="bookPrice" />
+    <result column="book_imgurl" jdbcType="VARCHAR" property="bookImgurl" />
+    <result column="book_num" jdbcType="INTEGER" property="bookNum" />
+    <result column="book_addtime" jdbcType="TIMESTAMP" property="bookAddtime" />
+    <result column="book_cnclass_letter" jdbcType="VARCHAR" property="bookCnclassLetter" />
+    <result column="book_subject_id" jdbcType="INTEGER" property="bookSubjectId" />
+    <result column="book_category_id" jdbcType="INTEGER" property="bookCategoryId" />
+    <result column="book_isget" jdbcType="INTEGER" property="bookIsget" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    book_id, book_name, book_author, book_summary, book_publish, book_pubtime, isbn, 
+    book_numberpage, book_price, book_imgurl, book_num, book_addtime, book_cnclass_letter, 
+    book_subject_id, book_category_id, book_isget
+  </sql>
+  <select id="selectByExample" parameterType="com.tsjg.core.bean.BookExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from book
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.tsjg.core.bean.BookExample">
+    delete from book
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.tsjg.core.bean.Book">
+    insert into book (book_id, book_name, book_author, 
+      book_summary, book_publish, book_pubtime, 
+      isbn, book_numberpage, book_price, 
+      book_imgurl, book_num, book_addtime, 
+      book_cnclass_letter, book_subject_id, book_category_id, 
+      book_isget)
+    values (#{bookId,jdbcType=INTEGER}, #{bookName,jdbcType=VARCHAR}, #{bookAuthor,jdbcType=VARCHAR}, 
+      #{bookSummary,jdbcType=VARCHAR}, #{bookPublish,jdbcType=VARCHAR}, #{bookPubtime,jdbcType=VARCHAR}, 
+      #{isbn,jdbcType=VARCHAR}, #{bookNumberpage,jdbcType=VARCHAR}, #{bookPrice,jdbcType=VARCHAR}, 
+      #{bookImgurl,jdbcType=VARCHAR}, #{bookNum,jdbcType=INTEGER}, #{bookAddtime,jdbcType=TIMESTAMP}, 
+      #{bookCnclassLetter,jdbcType=VARCHAR}, #{bookSubjectId,jdbcType=INTEGER}, #{bookCategoryId,jdbcType=INTEGER}, 
+      #{bookIsget,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tsjg.core.bean.Book">
+    insert into book
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="bookId != null">
+        book_id,
+      </if>
+      <if test="bookName != null">
+        book_name,
+      </if>
+      <if test="bookAuthor != null">
+        book_author,
+      </if>
+      <if test="bookSummary != null">
+        book_summary,
+      </if>
+      <if test="bookPublish != null">
+        book_publish,
+      </if>
+      <if test="bookPubtime != null">
+        book_pubtime,
+      </if>
+      <if test="isbn != null">
+        isbn,
+      </if>
+      <if test="bookNumberpage != null">
+        book_numberpage,
+      </if>
+      <if test="bookPrice != null">
+        book_price,
+      </if>
+      <if test="bookImgurl != null">
+        book_imgurl,
+      </if>
+      <if test="bookNum != null">
+        book_num,
+      </if>
+      <if test="bookAddtime != null">
+        book_addtime,
+      </if>
+      <if test="bookCnclassLetter != null">
+        book_cnclass_letter,
+      </if>
+      <if test="bookSubjectId != null">
+        book_subject_id,
+      </if>
+      <if test="bookCategoryId != null">
+        book_category_id,
+      </if>
+      <if test="bookIsget != null">
+        book_isget,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="bookId != null">
+        #{bookId,jdbcType=INTEGER},
+      </if>
+      <if test="bookName != null">
+        #{bookName,jdbcType=VARCHAR},
+      </if>
+      <if test="bookAuthor != null">
+        #{bookAuthor,jdbcType=VARCHAR},
+      </if>
+      <if test="bookSummary != null">
+        #{bookSummary,jdbcType=VARCHAR},
+      </if>
+      <if test="bookPublish != null">
+        #{bookPublish,jdbcType=VARCHAR},
+      </if>
+      <if test="bookPubtime != null">
+        #{bookPubtime,jdbcType=VARCHAR},
+      </if>
+      <if test="isbn != null">
+        #{isbn,jdbcType=VARCHAR},
+      </if>
+      <if test="bookNumberpage != null">
+        #{bookNumberpage,jdbcType=VARCHAR},
+      </if>
+      <if test="bookPrice != null">
+        #{bookPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="bookImgurl != null">
+        #{bookImgurl,jdbcType=VARCHAR},
+      </if>
+      <if test="bookNum != null">
+        #{bookNum,jdbcType=INTEGER},
+      </if>
+      <if test="bookAddtime != null">
+        #{bookAddtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bookCnclassLetter != null">
+        #{bookCnclassLetter,jdbcType=VARCHAR},
+      </if>
+      <if test="bookSubjectId != null">
+        #{bookSubjectId,jdbcType=INTEGER},
+      </if>
+      <if test="bookCategoryId != null">
+        #{bookCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="bookIsget != null">
+        #{bookIsget,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.tsjg.core.bean.BookExample" resultType="java.lang.Long">
+    select count(*) from book
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update book
+    <set>
+      <if test="record.bookId != null">
+        book_id = #{record.bookId,jdbcType=INTEGER},
+      </if>
+      <if test="record.bookName != null">
+        book_name = #{record.bookName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bookAuthor != null">
+        book_author = #{record.bookAuthor,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bookSummary != null">
+        book_summary = #{record.bookSummary,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bookPublish != null">
+        book_publish = #{record.bookPublish,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bookPubtime != null">
+        book_pubtime = #{record.bookPubtime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isbn != null">
+        isbn = #{record.isbn,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bookNumberpage != null">
+        book_numberpage = #{record.bookNumberpage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bookPrice != null">
+        book_price = #{record.bookPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bookImgurl != null">
+        book_imgurl = #{record.bookImgurl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bookNum != null">
+        book_num = #{record.bookNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.bookAddtime != null">
+        book_addtime = #{record.bookAddtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.bookCnclassLetter != null">
+        book_cnclass_letter = #{record.bookCnclassLetter,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bookSubjectId != null">
+        book_subject_id = #{record.bookSubjectId,jdbcType=INTEGER},
+      </if>
+      <if test="record.bookCategoryId != null">
+        book_category_id = #{record.bookCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="record.bookIsget != null">
+        book_isget = #{record.bookIsget,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update book
+    set book_id = #{record.bookId,jdbcType=INTEGER},
+      book_name = #{record.bookName,jdbcType=VARCHAR},
+      book_author = #{record.bookAuthor,jdbcType=VARCHAR},
+      book_summary = #{record.bookSummary,jdbcType=VARCHAR},
+      book_publish = #{record.bookPublish,jdbcType=VARCHAR},
+      book_pubtime = #{record.bookPubtime,jdbcType=VARCHAR},
+      isbn = #{record.isbn,jdbcType=VARCHAR},
+      book_numberpage = #{record.bookNumberpage,jdbcType=VARCHAR},
+      book_price = #{record.bookPrice,jdbcType=VARCHAR},
+      book_imgurl = #{record.bookImgurl,jdbcType=VARCHAR},
+      book_num = #{record.bookNum,jdbcType=INTEGER},
+      book_addtime = #{record.bookAddtime,jdbcType=TIMESTAMP},
+      book_cnclass_letter = #{record.bookCnclassLetter,jdbcType=VARCHAR},
+      book_subject_id = #{record.bookSubjectId,jdbcType=INTEGER},
+      book_category_id = #{record.bookCategoryId,jdbcType=INTEGER},
+      book_isget = #{record.bookIsget,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

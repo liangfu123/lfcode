@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsjg.core.dao.MagMapper">
+  <resultMap id="BaseResultMap" type="com.tsjg.core.bean.Mag">
+    <id column="mag_id" jdbcType="INTEGER" property="magId" />
+    <result column="mag_title" jdbcType="VARCHAR" property="magTitle" />
+    <result column="mag_competent" jdbcType="VARCHAR" property="magCompetent" />
+    <result column="mag_hostunit" jdbcType="VARCHAR" property="magHostunit" />
+    <result column="mag_mailnum" jdbcType="VARCHAR" property="magMailnum" />
+    <result column="mag_issn" jdbcType="VARCHAR" property="magIssn" />
+    <result column="mag_cn" jdbcType="VARCHAR" property="magCn" />
+    <result column="mag_pubcycle" jdbcType="VARCHAR" property="magPubcycle" />
+    <result column="mag_intro" jdbcType="VARCHAR" property="magIntro" />
+    <result column="mag_price" jdbcType="VARCHAR" property="magPrice" />
+    <result column="mag_imgurl" jdbcType="VARCHAR" property="magImgurl" />
+    <result column="mag_category_id" jdbcType="VARCHAR" property="magCategoryId" />
+    <result column="mag_addtime" jdbcType="TIMESTAMP" property="magAddtime" />
+    <result column="mag_num" jdbcType="INTEGER" property="magNum" />
+    <result column="mag_isget" jdbcType="INTEGER" property="magIsget" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    mag_id, mag_title, mag_competent, mag_hostunit, mag_mailnum, mag_issn, mag_cn, mag_pubcycle, 
+    mag_intro, mag_price, mag_imgurl, mag_category_id, mag_addtime, mag_num, mag_isget
+  </sql>
+  <select id="selectByExample" parameterType="com.tsjg.core.bean.MagExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from mag
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mag
+    where mag_id = #{magId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from mag
+    where mag_id = #{magId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.tsjg.core.bean.MagExample">
+    delete from mag
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.tsjg.core.bean.Mag">
+    insert into mag (mag_id, mag_title, mag_competent, 
+      mag_hostunit, mag_mailnum, mag_issn, 
+      mag_cn, mag_pubcycle, mag_intro, 
+      mag_price, mag_imgurl, mag_category_id, 
+      mag_addtime, mag_num, mag_isget
+      )
+    values (#{magId,jdbcType=INTEGER}, #{magTitle,jdbcType=VARCHAR}, #{magCompetent,jdbcType=VARCHAR}, 
+      #{magHostunit,jdbcType=VARCHAR}, #{magMailnum,jdbcType=VARCHAR}, #{magIssn,jdbcType=VARCHAR}, 
+      #{magCn,jdbcType=VARCHAR}, #{magPubcycle,jdbcType=VARCHAR}, #{magIntro,jdbcType=VARCHAR}, 
+      #{magPrice,jdbcType=VARCHAR}, #{magImgurl,jdbcType=VARCHAR}, #{magCategoryId,jdbcType=VARCHAR}, 
+      #{magAddtime,jdbcType=TIMESTAMP}, #{magNum,jdbcType=INTEGER}, #{magIsget,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.tsjg.core.bean.Mag">
+    insert into mag
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="magId != null">
+        mag_id,
+      </if>
+      <if test="magTitle != null">
+        mag_title,
+      </if>
+      <if test="magCompetent != null">
+        mag_competent,
+      </if>
+      <if test="magHostunit != null">
+        mag_hostunit,
+      </if>
+      <if test="magMailnum != null">
+        mag_mailnum,
+      </if>
+      <if test="magIssn != null">
+        mag_issn,
+      </if>
+      <if test="magCn != null">
+        mag_cn,
+      </if>
+      <if test="magPubcycle != null">
+        mag_pubcycle,
+      </if>
+      <if test="magIntro != null">
+        mag_intro,
+      </if>
+      <if test="magPrice != null">
+        mag_price,
+      </if>
+      <if test="magImgurl != null">
+        mag_imgurl,
+      </if>
+      <if test="magCategoryId != null">
+        mag_category_id,
+      </if>
+      <if test="magAddtime != null">
+        mag_addtime,
+      </if>
+      <if test="magNum != null">
+        mag_num,
+      </if>
+      <if test="magIsget != null">
+        mag_isget,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="magId != null">
+        #{magId,jdbcType=INTEGER},
+      </if>
+      <if test="magTitle != null">
+        #{magTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="magCompetent != null">
+        #{magCompetent,jdbcType=VARCHAR},
+      </if>
+      <if test="magHostunit != null">
+        #{magHostunit,jdbcType=VARCHAR},
+      </if>
+      <if test="magMailnum != null">
+        #{magMailnum,jdbcType=VARCHAR},
+      </if>
+      <if test="magIssn != null">
+        #{magIssn,jdbcType=VARCHAR},
+      </if>
+      <if test="magCn != null">
+        #{magCn,jdbcType=VARCHAR},
+      </if>
+      <if test="magPubcycle != null">
+        #{magPubcycle,jdbcType=VARCHAR},
+      </if>
+      <if test="magIntro != null">
+        #{magIntro,jdbcType=VARCHAR},
+      </if>
+      <if test="magPrice != null">
+        #{magPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="magImgurl != null">
+        #{magImgurl,jdbcType=VARCHAR},
+      </if>
+      <if test="magCategoryId != null">
+        #{magCategoryId,jdbcType=VARCHAR},
+      </if>
+      <if test="magAddtime != null">
+        #{magAddtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="magNum != null">
+        #{magNum,jdbcType=INTEGER},
+      </if>
+      <if test="magIsget != null">
+        #{magIsget,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.tsjg.core.bean.MagExample" resultType="java.lang.Long">
+    select count(*) from mag
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update mag
+    <set>
+      <if test="record.magId != null">
+        mag_id = #{record.magId,jdbcType=INTEGER},
+      </if>
+      <if test="record.magTitle != null">
+        mag_title = #{record.magTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.magCompetent != null">
+        mag_competent = #{record.magCompetent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.magHostunit != null">
+        mag_hostunit = #{record.magHostunit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.magMailnum != null">
+        mag_mailnum = #{record.magMailnum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.magIssn != null">
+        mag_issn = #{record.magIssn,jdbcType=VARCHAR},
+      </if>
+      <if test="record.magCn != null">
+        mag_cn = #{record.magCn,jdbcType=VARCHAR},
+      </if>
+      <if test="record.magPubcycle != null">
+        mag_pubcycle = #{record.magPubcycle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.magIntro != null">
+        mag_intro = #{record.magIntro,jdbcType=VARCHAR},
+      </if>
+      <if test="record.magPrice != null">
+        mag_price = #{record.magPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="record.magImgurl != null">
+        mag_imgurl = #{record.magImgurl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.magCategoryId != null">
+        mag_category_id = #{record.magCategoryId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.magAddtime != null">
+        mag_addtime = #{record.magAddtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.magNum != null">
+        mag_num = #{record.magNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.magIsget != null">
+        mag_isget = #{record.magIsget,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update mag
+    set mag_id = #{record.magId,jdbcType=INTEGER},
+      mag_title = #{record.magTitle,jdbcType=VARCHAR},
+      mag_competent = #{record.magCompetent,jdbcType=VARCHAR},
+      mag_hostunit = #{record.magHostunit,jdbcType=VARCHAR},
+      mag_mailnum = #{record.magMailnum,jdbcType=VARCHAR},
+      mag_issn = #{record.magIssn,jdbcType=VARCHAR},
+      mag_cn = #{record.magCn,jdbcType=VARCHAR},
+      mag_pubcycle = #{record.magPubcycle,jdbcType=VARCHAR},
+      mag_intro = #{record.magIntro,jdbcType=VARCHAR},
+      mag_price = #{record.magPrice,jdbcType=VARCHAR},
+      mag_imgurl = #{record.magImgurl,jdbcType=VARCHAR},
+      mag_category_id = #{record.magCategoryId,jdbcType=VARCHAR},
+      mag_addtime = #{record.magAddtime,jdbcType=TIMESTAMP},
+      mag_num = #{record.magNum,jdbcType=INTEGER},
+      mag_isget = #{record.magIsget,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tsjg.core.bean.Mag">
+    update mag
+    <set>
+      <if test="magTitle != null">
+        mag_title = #{magTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="magCompetent != null">
+        mag_competent = #{magCompetent,jdbcType=VARCHAR},
+      </if>
+      <if test="magHostunit != null">
+        mag_hostunit = #{magHostunit,jdbcType=VARCHAR},
+      </if>
+      <if test="magMailnum != null">
+        mag_mailnum = #{magMailnum,jdbcType=VARCHAR},
+      </if>
+      <if test="magIssn != null">
+        mag_issn = #{magIssn,jdbcType=VARCHAR},
+      </if>
+      <if test="magCn != null">
+        mag_cn = #{magCn,jdbcType=VARCHAR},
+      </if>
+      <if test="magPubcycle != null">
+        mag_pubcycle = #{magPubcycle,jdbcType=VARCHAR},
+      </if>
+      <if test="magIntro != null">
+        mag_intro = #{magIntro,jdbcType=VARCHAR},
+      </if>
+      <if test="magPrice != null">
+        mag_price = #{magPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="magImgurl != null">
+        mag_imgurl = #{magImgurl,jdbcType=VARCHAR},
+      </if>
+      <if test="magCategoryId != null">
+        mag_category_id = #{magCategoryId,jdbcType=VARCHAR},
+      </if>
+      <if test="magAddtime != null">
+        mag_addtime = #{magAddtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="magNum != null">
+        mag_num = #{magNum,jdbcType=INTEGER},
+      </if>
+      <if test="magIsget != null">
+        mag_isget = #{magIsget,jdbcType=INTEGER},
+      </if>
+    </set>
+    where mag_id = #{magId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tsjg.core.bean.Mag">
+    update mag
+    set mag_title = #{magTitle,jdbcType=VARCHAR},
+      mag_competent = #{magCompetent,jdbcType=VARCHAR},
+      mag_hostunit = #{magHostunit,jdbcType=VARCHAR},
+      mag_mailnum = #{magMailnum,jdbcType=VARCHAR},
+      mag_issn = #{magIssn,jdbcType=VARCHAR},
+      mag_cn = #{magCn,jdbcType=VARCHAR},
+      mag_pubcycle = #{magPubcycle,jdbcType=VARCHAR},
+      mag_intro = #{magIntro,jdbcType=VARCHAR},
+      mag_price = #{magPrice,jdbcType=VARCHAR},
+      mag_imgurl = #{magImgurl,jdbcType=VARCHAR},
+      mag_category_id = #{magCategoryId,jdbcType=VARCHAR},
+      mag_addtime = #{magAddtime,jdbcType=TIMESTAMP},
+      mag_num = #{magNum,jdbcType=INTEGER},
+      mag_isget = #{magIsget,jdbcType=INTEGER}
+    where mag_id = #{magId,jdbcType=INTEGER}
+  </update>
+</mapper>

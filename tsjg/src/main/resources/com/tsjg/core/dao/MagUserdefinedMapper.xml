@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsjg.core.dao.MagUserdefinedMapper">
+  <resultMap id="BaseResultMap" type="com.tsjg.core.bean.MagUserdefined">
+    <id column="mag_userdefined_id" jdbcType="INTEGER" property="magUserdefinedId" />
+    <result column="mag_ud_title" jdbcType="VARCHAR" property="magUdTitle" />
+    <result column="mag_ud_competent" jdbcType="VARCHAR" property="magUdCompetent" />
+    <result column="mag_ud_hostunit" jdbcType="VARCHAR" property="magUdHostunit" />
+    <result column="mag_ud_mailnum" jdbcType="VARCHAR" property="magUdMailnum" />
+    <result column="mag_ud_cn" jdbcType="VARCHAR" property="magUdCn" />
+    <result column="mag_issn" jdbcType="VARCHAR" property="magIssn" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="mag_jg_time" jdbcType="TIMESTAMP" property="magJgTime" />
+    <result column="isget" jdbcType="INTEGER" property="isget" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    mag_userdefined_id, mag_ud_title, mag_ud_competent, mag_ud_hostunit, mag_ud_mailnum, 
+    mag_ud_cn, mag_issn, user_id, mag_jg_time, isget
+  </sql>
+  <select id="selectByExample" parameterType="com.tsjg.core.bean.MagUserdefinedExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from mag_userdefined
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  
+  <!-- ************************************ -->
+  <sql id="Limit">
+ 	LIMIT #{startRow},#{pageSize}
+  </sql>
+  <sql id="OrderBy">
+  	ORDER BY mag_jg_time desc
+  </sql>
+  
+  <select id="findUserMagJgCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+  	SELECT COUNT(*)  
+	FROM mag_userdefined 
+	WHERE user_id = #{userId}
+  </select>
+  <select id="findUserMagJg" parameterType="com.tsjg.core.bean.MagUserdefined" resultMap="BaseResultMap">
+  	SELECT * 
+	FROM mag_userdefined 
+	WHERE user_id = #{userId}
+	<include refid="OrderBy"></include>
+	<include refid="Limit"></include>
+  </select>
+  <!-- ************************************ -->
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mag_userdefined
+    where mag_userdefined_id = #{magUserdefinedId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from mag_userdefined
+    where mag_userdefined_id = #{magUserdefinedId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.tsjg.core.bean.MagUserdefinedExample">
+    delete from mag_userdefined
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.tsjg.core.bean.MagUserdefined">
+    insert into mag_userdefined (mag_userdefined_id, mag_ud_title, mag_ud_competent, 
+      mag_ud_hostunit, mag_ud_mailnum, mag_ud_cn, 
+      mag_issn, user_id, mag_jg_time, 
+      isget)
+    values (#{magUserdefinedId,jdbcType=INTEGER}, #{magUdTitle,jdbcType=VARCHAR}, #{magUdCompetent,jdbcType=VARCHAR}, 
+      #{magUdHostunit,jdbcType=VARCHAR}, #{magUdMailnum,jdbcType=VARCHAR}, #{magUdCn,jdbcType=VARCHAR}, 
+      #{magIssn,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, #{magJgTime,jdbcType=TIMESTAMP}, 
+      #{isget,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tsjg.core.bean.MagUserdefined">
+    insert into mag_userdefined
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="magUserdefinedId != null">
+        mag_userdefined_id,
+      </if>
+      <if test="magUdTitle != null">
+        mag_ud_title,
+      </if>
+      <if test="magUdCompetent != null">
+        mag_ud_competent,
+      </if>
+      <if test="magUdHostunit != null">
+        mag_ud_hostunit,
+      </if>
+      <if test="magUdMailnum != null">
+        mag_ud_mailnum,
+      </if>
+      <if test="magUdCn != null">
+        mag_ud_cn,
+      </if>
+      <if test="magIssn != null">
+        mag_issn,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="magJgTime != null">
+        mag_jg_time,
+      </if>
+      <if test="isget != null">
+        isget,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="magUserdefinedId != null">
+        #{magUserdefinedId,jdbcType=INTEGER},
+      </if>
+      <if test="magUdTitle != null">
+        #{magUdTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="magUdCompetent != null">
+        #{magUdCompetent,jdbcType=VARCHAR},
+      </if>
+      <if test="magUdHostunit != null">
+        #{magUdHostunit,jdbcType=VARCHAR},
+      </if>
+      <if test="magUdMailnum != null">
+        #{magUdMailnum,jdbcType=VARCHAR},
+      </if>
+      <if test="magUdCn != null">
+        #{magUdCn,jdbcType=VARCHAR},
+      </if>
+      <if test="magIssn != null">
+        #{magIssn,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="magJgTime != null">
+        #{magJgTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isget != null">
+        #{isget,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.tsjg.core.bean.MagUserdefinedExample" resultType="java.lang.Long">
+    select count(*) from mag_userdefined
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update mag_userdefined
+    <set>
+      <if test="record.magUserdefinedId != null">
+        mag_userdefined_id = #{record.magUserdefinedId,jdbcType=INTEGER},
+      </if>
+      <if test="record.magUdTitle != null">
+        mag_ud_title = #{record.magUdTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.magUdCompetent != null">
+        mag_ud_competent = #{record.magUdCompetent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.magUdHostunit != null">
+        mag_ud_hostunit = #{record.magUdHostunit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.magUdMailnum != null">
+        mag_ud_mailnum = #{record.magUdMailnum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.magUdCn != null">
+        mag_ud_cn = #{record.magUdCn,jdbcType=VARCHAR},
+      </if>
+      <if test="record.magIssn != null">
+        mag_issn = #{record.magIssn,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.magJgTime != null">
+        mag_jg_time = #{record.magJgTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isget != null">
+        isget = #{record.isget,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update mag_userdefined
+    set mag_userdefined_id = #{record.magUserdefinedId,jdbcType=INTEGER},
+      mag_ud_title = #{record.magUdTitle,jdbcType=VARCHAR},
+      mag_ud_competent = #{record.magUdCompetent,jdbcType=VARCHAR},
+      mag_ud_hostunit = #{record.magUdHostunit,jdbcType=VARCHAR},
+      mag_ud_mailnum = #{record.magUdMailnum,jdbcType=VARCHAR},
+      mag_ud_cn = #{record.magUdCn,jdbcType=VARCHAR},
+      mag_issn = #{record.magIssn,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      mag_jg_time = #{record.magJgTime,jdbcType=TIMESTAMP},
+      isget = #{record.isget,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tsjg.core.bean.MagUserdefined">
+    update mag_userdefined
+    <set>
+      <if test="magUdTitle != null">
+        mag_ud_title = #{magUdTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="magUdCompetent != null">
+        mag_ud_competent = #{magUdCompetent,jdbcType=VARCHAR},
+      </if>
+      <if test="magUdHostunit != null">
+        mag_ud_hostunit = #{magUdHostunit,jdbcType=VARCHAR},
+      </if>
+      <if test="magUdMailnum != null">
+        mag_ud_mailnum = #{magUdMailnum,jdbcType=VARCHAR},
+      </if>
+      <if test="magUdCn != null">
+        mag_ud_cn = #{magUdCn,jdbcType=VARCHAR},
+      </if>
+      <if test="magIssn != null">
+        mag_issn = #{magIssn,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="magJgTime != null">
+        mag_jg_time = #{magJgTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isget != null">
+        isget = #{isget,jdbcType=INTEGER},
+      </if>
+    </set>
+    where mag_userdefined_id = #{magUserdefinedId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tsjg.core.bean.MagUserdefined">
+    update mag_userdefined
+    set mag_ud_title = #{magUdTitle,jdbcType=VARCHAR},
+      mag_ud_competent = #{magUdCompetent,jdbcType=VARCHAR},
+      mag_ud_hostunit = #{magUdHostunit,jdbcType=VARCHAR},
+      mag_ud_mailnum = #{magUdMailnum,jdbcType=VARCHAR},
+      mag_ud_cn = #{magUdCn,jdbcType=VARCHAR},
+      mag_issn = #{magIssn,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER},
+      mag_jg_time = #{magJgTime,jdbcType=TIMESTAMP},
+      isget = #{isget,jdbcType=INTEGER}
+    where mag_userdefined_id = #{magUserdefinedId,jdbcType=INTEGER}
+  </update>
+</mapper>

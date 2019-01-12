@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsjg.core.dao.MyBookPurchaseMapper">
+
+  <resultMap id="BaseResultMap" type="com.tsjg.core.bean.MyBookPurchase">
+    <id column="book_purchase_id" jdbcType="INTEGER" property="bookPurchaseId" />
+    <result column="isbn" jdbcType="VARCHAR" property="isbn" />
+    
+    <association property="book" javaType="book">
+    	<id column="book_id" jdbcType="INTEGER" property="bookId" />
+	    <result column="book_name"  property="bookName" />
+	    <result column="book_author"  property="bookAuthor" />
+	    <result column="book_summary"  property="bookSummary" />
+	    <result column="book_publish"  property="bookPublish" />
+	    <result column="book_subject_id"  property="bookSubjectId" />
+	    <result column="book_category_id"  property="bookCategoryId" />
+	    <result column="isbn"  property="isbn" />
+	    <result column="book_addtime" property="bookAddtime" />
+	    <result column="book_imgurl"  property="bookImgurl" />
+	    <result column="book_numberpage"  property="bookNumberpage" />
+	    <result column="book_pubtime"  property="bookPubtime" />
+	    <result column="book_num" property="bookNum" />
+	    <result column="book_price" jdbcType="VARCHAR" property="bookPrice" />
+    </association>
+    
+  </resultMap>
+  
+  <sql id="Limit">
+ 	LIMIT #{startRow},#{pageSize}
+  </sql>
+  
+  <sql id="OrderBy">
+  	ORDER BY book_num DESC
+  </sql>
+  
+  <select id="selectPurchaseBookCount" resultType="java.lang.Integer">
+  	SELECT COUNT(*) FROM book_purchase LEFT JOIN book 
+	ON book_purchase.isbn = book.isbn
+  </select>
+  
+  <select id="selectPurchaseBookList" parameterType="com.tsjg.core.bean.BookPurchase" resultMap="BaseResultMap">
+  	SELECT * FROM book_purchase LEFT JOIN book 
+	ON book_purchase.isbn = book.isbn
+	<include refid="OrderBy"></include>
+	<include refid="Limit"></include> 
+  </select>
+  
+  <select id="selectPurchaseBookAll" resultMap="BaseResultMap">
+  	SELECT * FROM book_purchase LEFT JOIN book 
+	ON book_purchase.isbn = book.isbn
+	<include refid="OrderBy"></include> 
+  </select>
+  
+  <delete id="deleteBooks" parameterType="java.lang.String">
+  	DELETE FROM book_purchase
+  	<where>
+  		isbn IN
+  		<foreach collection="array" item="isbn" open="(" close=")" separator=",">
+  			#{isbn}
+  		</foreach>
+  	</where>
+  </delete>
+ 
+</mapper>  

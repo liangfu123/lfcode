@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsjg.core.dao.MyMagMapper">
+  <resultMap id="BaseResultMap" type="com.tsjg.core.bean.Mag">
+    <id column="mag_id" jdbcType="INTEGER" property="magId" />
+    <result column="mag_title" jdbcType="VARCHAR" property="magTitle" />
+    <result column="mag_competent" jdbcType="VARCHAR" property="magCompetent" />
+    <result column="mag_hostunit" jdbcType="VARCHAR" property="magHostunit" />
+    <result column="mag_mailnum" jdbcType="VARCHAR" property="magMailnum" />
+    <result column="mag_issn" jdbcType="VARCHAR" property="magIssn" />
+    <result column="mag_cn" jdbcType="VARCHAR" property="magCn" />
+    <result column="mag_pubcycle" jdbcType="VARCHAR" property="magPubcycle" />
+    <result column="mag_intro" jdbcType="VARCHAR" property="magIntro" />
+    <result column="mag_price" jdbcType="VARCHAR" property="magPrice" />
+    <result column="mag_imgurl" jdbcType="VARCHAR" property="magImgurl" />
+    <result column="mag_category_id" jdbcType="VARCHAR" property="magCategoryId" />
+    <result column="mag_addtime" jdbcType="TIMESTAMP" property="magAddtime" />
+    <result column="mag_num" jdbcType="INTEGER" property="magNum" />
+    <result column="mag_category_name" jdbcType="VARCHAR" property="magCategoryName" />
+    <result column="mag_isget" jdbcType="INTEGER" property="magIsget" />  
+    <association property="magJg" javaType="magJg">
+    	<id column="magjg_id" jdbcType="INTEGER" property="magjgId" />
+	    <result column="magjg_time" jdbcType="TIMESTAMP" property="magjgTime" />
+	    <result column="mag_issn" jdbcType="VARCHAR" property="magIssn" />
+	    <result column="user_id" jdbcType="INTEGER" property="userId" />
+	    <result column="isget" jdbcType="INTEGER" property="isget" />
+    </association>
+    
+  </resultMap>
+  
+  <sql id="Limit">
+ 	LIMIT #{startRow},#{pageSize}
+  </sql>
+  
+  <sql id="OrderBy">
+  	ORDER BY mag_addtime desc
+  </sql>
+  
+  <sql id="Where">
+  	<if test="magTitle != null and magTitle != ''">
+  		<where>
+  			mag_title LIKE '%${magTitle}%'
+  		</where>
+  	</if>
+  	<if test="magIssn != null and magIssn != ''">
+  		<where>
+  			mag_issn = #{magIssn}
+  		</where>
+  	</if>
+  	<if test="magCn != null and magCn != ''">
+  		<where>
+  			mag_cn = #{magCn}
+  		</where>
+  	</if>
+  	<if test="magPubcycle != null and magPubcycle != ''">
+  		<where>
+  			mag_pubcycle LIKE '%${magPubcycle}%'
+  		</where>
+  	</if>
+  </sql>
+  
+  <select id="findNewMagsCount" resultType="java.lang.Integer">
+  	SELECT COUNT(*) FROM mag WHERE mag_isget = 1
+  </select>
+  
+  <select id="findNewMags" parameterType="com.tsjg.core.bean.Mag" resultMap="BaseResultMap">
+  	SELECT * FROM mag WHERE mag_isget = 1
+  	<include refid="OrderBy"></include>
+  	<include refid="Limit"></include>
+  </select>
+  
+  <update id="updateMagIsget" parameterType="java.lang.String">
+  	UPDATE mag SET mag_isget = 1
+	WHERE mag_issn IN 
+	<foreach collection="array" item="magIssn" open="(" close=")" separator=",">
+		#{magIssn}
+	</foreach>
+  </update>
+  
+  <select id="findReaderMagCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+  	SELECT COUNT(*)
+	FROM mag,mag_jg 
+	WHERE mag_jg.user_id = #{userId}
+	AND mag.mag_issn = mag_jg.mag_issn;
+  </select>
+  
+  <select id="findReaderMag" parameterType="com.tsjg.core.bean.Mag" resultMap="BaseResultMap">
+  	SELECT mag_jg.magjg_time,mag.*,mag_jg.isget
+	FROM mag,mag_jg 
+	WHERE mag_jg.user_id = #{magJg.userId}
+	AND mag.mag_issn = mag_jg.mag_issn
+	ORDER BY magjg_time DESC
+	<include refid="Limit"></include>
+  </select>
+  
+  <update id="updateMagNum" parameterType="java.lang.String">
+  	UPDATE mag SET mag_num = mag_num +1 
+	WHERE mag_issn = #{magIssn}
+  </update>
+  
+  <delete id="deleteBatch" parameterType="java.lang.String">
+  	DELETE FROM mag  
+  	<where>
+  		mag_issn IN
+  		<foreach collection="array" item="magIssn" open="(" close=")" separator=",">
+  			#{magIssn}
+  		</foreach>
+  	</where>
+  </delete>
+  
+  <select id="findMagSearchCount" parameterType="com.tsjg.core.bean.Mag" resultType="java.lang.Integer">
+  	SELECT COUNT(*) FROM mag
+  	<include refid="Where"></include>
+  </select>
+  
+  <select id="findMagSearch" parameterType="com.tsjg.core.bean.Mag" resultMap="BaseResultMap">
+  	SELECT * FROM mag
+  	<include refid="Where"></include>
+  	<include refid="Limit"></include>
+  </select>
+  
+  <select id="findMagRankCount" resultType="java.lang.Integer">
+  	SELECT COUNT(*) FROM mag
+  </select>
+  
+  <select id="findMagRank" parameterType="com.tsjg.core.bean.Mag" resultMap="BaseResultMap">
+  	SELECT * FROM mag 
+	ORDER BY mag_num DESC
+	<include refid="Limit"></include>
+  </select>
+  
+  <select id="findMagInfo" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	SELECT mag.*,mag_category.mag_category_name
+	FROM mag,mag_category
+	WHERE mag.mag_category_id = mag_category.mag_category_id
+	AND mag.mag_issn = #{magIssn} 
+  </select>
+  
+  <select id="findMagCategoryCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+  	SELECT COUNT(*) 
+	FROM mag
+	WHERE mag.mag_category_id = #{magCategoryId}
+  </select>
+  
+  <select id="findMagCategory" parameterType="com.tsjg.core.bean.Mag" resultMap="BaseResultMap">
+  	SELECT * 
+	FROM mag
+	WHERE mag.mag_category_id = #{magCategoryId}
+	<include refid="Limit"></include>
+  </select>
+  
+  <select id="findCountMag" resultType="java.lang.Integer">
+  	SELECT COUNT(*) FROM mag
+  </select>
+  
+  <select id="findAllMag" parameterType="com.tsjg.core.bean.Mag" resultMap="BaseResultMap">
+  	SELECT * FROM mag 
+	<include refid="OrderBy"></include>
+	<include refid="Limit"></include>
+  </select>
+  
+</mapper>

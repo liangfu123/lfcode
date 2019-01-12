@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsjg.core.dao.BookCollectionMapper">
+  <resultMap id="BaseResultMap" type="com.tsjg.core.bean.BookCollection">
+    <id column="book_collection_id" jdbcType="INTEGER" property="bookCollectionId" />
+    <result column="isbn" jdbcType="VARCHAR" property="isbn" />
+    <result column="book_location" jdbcType="VARCHAR" property="bookLocation" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    book_collection_id, isbn, book_location
+  </sql>
+  <select id="selectByExample" parameterType="com.tsjg.core.bean.BookCollectionExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from book_collection
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from book_collection
+    where book_collection_id = #{bookCollectionId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from book_collection
+    where book_collection_id = #{bookCollectionId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.tsjg.core.bean.BookCollectionExample">
+    delete from book_collection
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.tsjg.core.bean.BookCollection">
+    insert into book_collection (book_collection_id, isbn, book_location
+      )
+    values (#{bookCollectionId,jdbcType=INTEGER}, #{isbn,jdbcType=VARCHAR}, #{bookLocation,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.tsjg.core.bean.BookCollection">
+    insert into book_collection
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="bookCollectionId != null">
+        book_collection_id,
+      </if>
+      <if test="isbn != null">
+        isbn,
+      </if>
+      <if test="bookLocation != null">
+        book_location,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="bookCollectionId != null">
+        #{bookCollectionId,jdbcType=INTEGER},
+      </if>
+      <if test="isbn != null">
+        #{isbn,jdbcType=VARCHAR},
+      </if>
+      <if test="bookLocation != null">
+        #{bookLocation,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.tsjg.core.bean.BookCollectionExample" resultType="java.lang.Long">
+    select count(*) from book_collection
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update book_collection
+    <set>
+      <if test="record.bookCollectionId != null">
+        book_collection_id = #{record.bookCollectionId,jdbcType=INTEGER},
+      </if>
+      <if test="record.isbn != null">
+        isbn = #{record.isbn,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bookLocation != null">
+        book_location = #{record.bookLocation,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update book_collection
+    set book_collection_id = #{record.bookCollectionId,jdbcType=INTEGER},
+      isbn = #{record.isbn,jdbcType=VARCHAR},
+      book_location = #{record.bookLocation,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tsjg.core.bean.BookCollection">
+    update book_collection
+    <set>
+      <if test="isbn != null">
+        isbn = #{isbn,jdbcType=VARCHAR},
+      </if>
+      <if test="bookLocation != null">
+        book_location = #{bookLocation,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where book_collection_id = #{bookCollectionId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tsjg.core.bean.BookCollection">
+    update book_collection
+    set isbn = #{isbn,jdbcType=VARCHAR},
+      book_location = #{bookLocation,jdbcType=VARCHAR}
+    where book_collection_id = #{bookCollectionId,jdbcType=INTEGER}
+  </update>
+</mapper>

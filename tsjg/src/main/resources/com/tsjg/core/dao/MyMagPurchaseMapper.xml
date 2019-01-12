@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsjg.core.dao.MyMagPurchaseMapper">
+  <resultMap id="BaseResultMap" type="com.tsjg.core.bean.MagPurchase">
+    <id column="mag_purchase_id" jdbcType="INTEGER" property="magPurchaseId" />
+    <result column="mag_issn" jdbcType="VARCHAR" property="magIssn" />
+    
+    <association property="mag" javaType="mag">
+    	<id column="mag_id" jdbcType="INTEGER" property="magId" />
+	    <result column="mag_title" jdbcType="VARCHAR" property="magTitle" />
+	    <result column="mag_competent" jdbcType="VARCHAR" property="magCompetent" />
+	    <result column="mag_hostunit" jdbcType="VARCHAR" property="magHostunit" />
+	    <result column="mag_mailnum" jdbcType="VARCHAR" property="magMailnum" />
+	    <result column="mag_issn" jdbcType="VARCHAR" property="magIssn" />
+	    <result column="mag_cn" jdbcType="VARCHAR" property="magCn" />
+	    <result column="mag_pubcycle" jdbcType="VARCHAR" property="magPubcycle" />
+	    <result column="mag_intro" jdbcType="VARCHAR" property="magIntro" />
+	    <result column="mag_imgurl" jdbcType="VARCHAR" property="magImgurl" />
+	    <result column="mag_category_id" jdbcType="VARCHAR" property="magCategoryId" />
+	    <result column="mag_addtime" jdbcType="TIMESTAMP" property="magAddtime" />
+	    <result column="mag_num" jdbcType="INTEGER" property="magNum" />
+	    <result column="mag_price" jdbcType="VARCHAR" property="magPrice" />
+    </association>
+    
+  </resultMap>
+  
+  <sql id="Limit">
+ 	LIMIT #{startRow},#{pageSize}
+  </sql>
+  
+  <sql id="OrderBy">
+  	ORDER BY mag_num DESC
+  </sql>
+  
+  <select id="selectPurchaseMagCount" resultType="java.lang.Integer">
+  	SELECT COUNT(*) FROM mag_purchase LEFT JOIN mag 
+	ON mag_purchase.mag_issn = mag.mag_issn
+  </select>
+  
+  <select id="selectPurchaseMagList" parameterType="com.tsjg.core.bean.MagPurchase" resultMap="BaseResultMap">  	
+	SELECT * FROM mag_purchase LEFT JOIN mag 
+	ON mag_purchase.mag_issn = mag.mag_issn
+	<include refid="OrderBy"></include>
+	<include refid="Limit"></include> 
+  </select>
+  
+  <select id="selectPurchaseMagAll" resultMap="BaseResultMap">  	
+	SELECT * FROM mag_purchase LEFT JOIN mag 
+	ON mag_purchase.mag_issn = mag.mag_issn
+	<include refid="OrderBy"></include>
+  </select>
+  
+  <delete id="deleteMags" parameterType="java.lang.String">
+  	DELETE FROM mag_purchase
+  	<where>
+  		mag_issn IN
+  		<foreach collection="array" item="magIssn" open="(" close=")" separator=",">
+  			#{magIssn}
+  		</foreach>
+  	</where>
+  </delete>
+  
+</mapper>

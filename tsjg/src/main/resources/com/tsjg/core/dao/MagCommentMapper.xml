@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsjg.core.dao.MagCommentMapper">
+  <resultMap id="BaseResultMap" type="com.tsjg.core.bean.MagComment">
+    <id column="mc_id" jdbcType="INTEGER" property="mcId" />
+    <result column="mc_content" jdbcType="VARCHAR" property="mcContent" />
+    <result column="mc_time" jdbcType="TIMESTAMP" property="mcTime" />
+    <result column="mc_nouse" jdbcType="INTEGER" property="mcNouse" />
+    <result column="mc_beuse" jdbcType="INTEGER" property="mcBeuse" />
+    <result column="mag_id" jdbcType="INTEGER" property="magId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    mc_id, mc_content, mc_time, mc_nouse, mc_beuse, mag_id, user_id
+  </sql>
+  
+  <!-- ************************** -->
+  
+  <select id="findMagComment" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	SELECT mag_comment.*,user.user_id,user.username
+	FROM mag_comment,USER
+	WHERE mag_comment.user_id = user.user_id
+	AND mag_comment.mag_id = #{magId}
+  </select>
+  
+  <!-- ************************** -->
+  
+  <select id="selectByExample" parameterType="com.tsjg.core.bean.MagCommentExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from mag_comment
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mag_comment
+    where mc_id = #{mcId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from mag_comment
+    where mc_id = #{mcId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.tsjg.core.bean.MagCommentExample">
+    delete from mag_comment
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.tsjg.core.bean.MagComment">
+    insert into mag_comment (mc_id, mc_content, mc_time, 
+      mc_nouse, mc_beuse, mag_id, 
+      user_id)
+    values (#{mcId,jdbcType=INTEGER}, #{mcContent,jdbcType=VARCHAR}, #{mcTime,jdbcType=TIMESTAMP}, 
+      #{mcNouse,jdbcType=INTEGER}, #{mcBeuse,jdbcType=INTEGER}, #{magId,jdbcType=INTEGER}, 
+      #{userId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tsjg.core.bean.MagComment">
+    insert into mag_comment
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="mcId != null">
+        mc_id,
+      </if>
+      <if test="mcContent != null">
+        mc_content,
+      </if>
+      <if test="mcTime != null">
+        mc_time,
+      </if>
+      <if test="mcNouse != null">
+        mc_nouse,
+      </if>
+      <if test="mcBeuse != null">
+        mc_beuse,
+      </if>
+      <if test="magId != null">
+        mag_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="mcId != null">
+        #{mcId,jdbcType=INTEGER},
+      </if>
+      <if test="mcContent != null">
+        #{mcContent,jdbcType=VARCHAR},
+      </if>
+      <if test="mcTime != null">
+        #{mcTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mcNouse != null">
+        #{mcNouse,jdbcType=INTEGER},
+      </if>
+      <if test="mcBeuse != null">
+        #{mcBeuse,jdbcType=INTEGER},
+      </if>
+      <if test="magId != null">
+        #{magId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.tsjg.core.bean.MagCommentExample" resultType="java.lang.Long">
+    select count(*) from mag_comment
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update mag_comment
+    <set>
+      <if test="record.mcId != null">
+        mc_id = #{record.mcId,jdbcType=INTEGER},
+      </if>
+      <if test="record.mcContent != null">
+        mc_content = #{record.mcContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mcTime != null">
+        mc_time = #{record.mcTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.mcNouse != null">
+        mc_nouse = #{record.mcNouse,jdbcType=INTEGER},
+      </if>
+      <if test="record.mcBeuse != null">
+        mc_beuse = #{record.mcBeuse,jdbcType=INTEGER},
+      </if>
+      <if test="record.magId != null">
+        mag_id = #{record.magId,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update mag_comment
+    set mc_id = #{record.mcId,jdbcType=INTEGER},
+      mc_content = #{record.mcContent,jdbcType=VARCHAR},
+      mc_time = #{record.mcTime,jdbcType=TIMESTAMP},
+      mc_nouse = #{record.mcNouse,jdbcType=INTEGER},
+      mc_beuse = #{record.mcBeuse,jdbcType=INTEGER},
+      mag_id = #{record.magId,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tsjg.core.bean.MagComment">
+    update mag_comment
+    <set>
+      <if test="mcContent != null">
+        mc_content = #{mcContent,jdbcType=VARCHAR},
+      </if>
+      <if test="mcTime != null">
+        mc_time = #{mcTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mcNouse != null">
+        mc_nouse = #{mcNouse,jdbcType=INTEGER},
+      </if>
+      <if test="mcBeuse != null">
+        mc_beuse = #{mcBeuse,jdbcType=INTEGER},
+      </if>
+      <if test="magId != null">
+        mag_id = #{magId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where mc_id = #{mcId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tsjg.core.bean.MagComment">
+    update mag_comment
+    set mc_content = #{mcContent,jdbcType=VARCHAR},
+      mc_time = #{mcTime,jdbcType=TIMESTAMP},
+      mc_nouse = #{mcNouse,jdbcType=INTEGER},
+      mc_beuse = #{mcBeuse,jdbcType=INTEGER},
+      mag_id = #{magId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER}
+    where mc_id = #{mcId,jdbcType=INTEGER}
+  </update>
+</mapper>

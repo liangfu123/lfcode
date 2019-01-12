@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsjg.core.dao.MyBookMapper">
+  <resultMap id="BaseResultMap" type="com.tsjg.core.bean.Book">
+    <id column="book_id" jdbcType="INTEGER" property="bookId" />
+    <result column="book_name" jdbcType="VARCHAR" property="bookName" />
+    <result column="book_author" jdbcType="VARCHAR" property="bookAuthor" />
+    <result column="book_summary" jdbcType="VARCHAR" property="bookSummary" />
+    <result column="book_publish" jdbcType="VARCHAR" property="bookPublish" />
+    <result column="book_cnclass_letter" jdbcType="VARCHAR" property="bookCnclassLetter" />
+    <result column="book_subject_id" jdbcType="INTEGER" property="bookSubjectId" />
+    <result column="book_category_id" jdbcType="INTEGER" property="bookCategoryId" />
+    <result column="isbn" jdbcType="VARCHAR" property="isbn" />
+    <result column="book_addtime" jdbcType="TIMESTAMP" property="bookAddtime" />
+    <result column="book_price" jdbcType="VARCHAR" property="bookPrice" />
+    <result column="book_imgurl" jdbcType="VARCHAR" property="bookImgurl" />
+    <result column="book_numberpage" jdbcType="VARCHAR" property="bookNumberpage" />
+    <result column="book_pubtime" jdbcType="VARCHAR" property="bookPubtime" />
+    <result column="book_num" jdbcType="INTEGER" property="bookNum" />
+    <result column="book_cnclass_name" jdbcType="VARCHAR" property="bookCnclassName" />
+    <result column="book_subject_name" jdbcType="VARCHAR" property="bookSubjectName" />
+    <result column="book_category_name" jdbcType="VARCHAR" property="bookCategoryName" />
+    <result column="book_isget" jdbcType="INTEGER" property="bookIsget" />
+    
+    <association property="bookJg" javaType="bookJg">
+    	<id column="bookjg_id" jdbcType="INTEGER" property="bookjgId" />
+	    <result column="bookjg_time" jdbcType="TIMESTAMP" property="bookjgTime" />
+	    <result column="isbn" jdbcType="VARCHAR" property="isbn" />
+	    <result column="user_id" jdbcType="INTEGER" property="userId" />
+	    <result column="isget" jdbcType="INTEGER" property="isget" />
+    </association>
+    
+  </resultMap>
+ 
+  <sql id="Limit">
+ 	LIMIT #{startRow},#{pageSize}
+  </sql>
+  <sql id="OrderBy">
+  	ORDER BY book_addtime desc
+  </sql>
+  <sql id="Where">
+  	<if test="bookName != null and bookName != ''">
+  		<where>
+  			book_name LIKE '%${bookName}%'
+  		</where>
+  	</if>
+  	<if test="bookAuthor != null and bookAuthor != ''">
+  		<where>
+  			book_author LIKE '%${bookAuthor}%'
+  		</where>
+  	</if>
+  	<if test="bookPublish != null and bookPublish != ''">
+  		<where>
+  			book_publish LIKE '%${bookPublish}%'
+  		</where>
+  	</if>
+  	<if test="isbn != null and isbn != ''">
+  		<where>
+  			isbn = #{isbn}
+  		</where>
+  	</if>
+  </sql>
+  <sql id="WhereMulti">
+  	<where>
+  		<if test="bookName != null and bookName != ''">
+  			AND book_name = #{bookName}
+  		</if>
+  		<if test="bookAuthor != null and bookAuthor != ''">
+  			AND book_author = #{bookAuthor}
+  		</if>
+  		<if test="bookPublish != null and bookPublish != ''">
+  			AND book_publish = #{bookPublish}
+  		</if>
+  		<if test="isbn != null and isbn != ''">
+  			AND isbn = #{isbn}
+  		</if>
+  	</where>
+  </sql>
+  
+  <select id="findNewBooksCount" resultType="java.lang.Integer">
+  	SELECT COUNT(*) FROM book WHERE book_isget = 1
+  </select>
+  
+  <select id="findNewBooks" parameterType="com.tsjg.core.bean.Book" resultMap="BaseResultMap">
+  	SELECT * FROM book WHERE book_isget = 1
+  	<include refid="OrderBy"></include>
+  	<include refid="Limit"></include>
+  </select>
+  
+  <update id="updateBookIsget" parameterType="java.lang.String">
+  	UPDATE book SET book_isget = 1
+	WHERE isbn IN 
+	<foreach collection="array" item="isbn" open="(" close=")" separator=",">
+		#{isbn}
+	</foreach>
+  </update>
+  
+  <select id="findReaderBookCount" parameterType="java.lang.Integer" resultType="java.lang.Integer" >
+  	SELECT COUNT(*)
+	FROM book,book_jg 
+	WHERE book_jg.user_id = #{userId}
+	AND book.isbn = book_jg.isbn
+  </select>
+  
+  <select id="findReaderBook" parameterType="com.tsjg.core.bean.Book" resultMap="BaseResultMap">
+  	SELECT book_jg.bookjg_time,book.*,book_jg.isget
+	FROM book,book_jg 
+	WHERE book_jg.user_id = #{bookJg.userId}
+	AND book.isbn = book_jg.isbn
+	ORDER BY bookjg_time DESC
+	<include refid="Limit"></include>
+  </select>
+  
+  <update id="updateBookNum" parameterType="java.lang.String">
+  	UPDATE book SET book_num = book_num +1 
+	WHERE isbn = #{isbn}
+  </update>
+  
+  <select id="findMultiBookSearchCount" parameterType="com.tsjg.core.bean.Book" resultType="java.lang.Integer">
+  	SELECT COUNT(*) FROM book
+  	<include refid="WhereMulti"></include>
+  </select>
+  
+  <select id="findMultiBookSearch" parameterType="com.tsjg.core.bean.Book" resultMap="BaseResultMap">
+  	SELECT * FROM book
+  	<include refid="WhereMulti"></include>
+  	<include refid="Limit"></include>
+  </select>
+  
+  <select id="findBookSearchCount" parameterType="com.tsjg.core.bean.Book" resultType="java.lang.Integer">
+  	SELECT COUNT(*) FROM book
+  	<include refid="Where"></include>
+  </select>
+  
+  <select id="findBookSearch" parameterType="com.tsjg.core.bean.Book" resultMap="BaseResultMap">
+  	SELECT * FROM book
+  	<include refid="Where"></include>
+  	<include refid="Limit"></include>
+  </select>
+  
+  <select id="findBookRankCount" resultType="java.lang.Integer">
+  	SELECT COUNT(*) FROM book 
+  </select>
+  
+  <select id="findBookRank" parameterType="com.tsjg.core.bean.Book" resultMap="BaseResultMap">
+  	SELECT * FROM book 
+	ORDER BY book_num DESC
+	<include refid="Limit"></include>
+  </select>
+  
+  <select id="findBookInfo" parameterType="java.lang.String" resultMap="BaseResultMap">
+	SELECT book.*,book_category.book_category_name,book_subject.book_subject_name
+	FROM book,book_category,book_subject
+	WHERE book.book_category_id = book_category.book_category_id
+	AND book.book_subject_id = book_subject.book_subject_id
+	AND book.isbn = #{isbn}
+  </select>
+  
+  <select id="findBookCnclassCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+  	SELECT COUNT(*) 
+	FROM book
+	WHERE book.book_cnclass_letter = #{bookCnclassLetter}
+  </select>
+  
+  <select id="findBookCnclass" parameterType="com.tsjg.core.bean.Book" resultMap="BaseResultMap">
+  	SELECT * 
+	FROM book
+	WHERE book.book_cnclass_letter = #{bookCnclassLetter}
+	<include refid="Limit"></include>
+  </select>
+  
+  <select id="findBookCategoryCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+  	SELECT COUNT(*) 
+	FROM book
+	WHERE book.book_category_id = #{bookCategoryId}
+  </select>
+  
+  <select id="findBookCategory" parameterType="com.tsjg.core.bean.Book" resultMap="BaseResultMap">
+  	SELECT * 
+	FROM book
+	WHERE book.book_category_id = #{bookCategoryId}
+	<include refid="Limit"></include>
+  </select>
+  
+  <select id="findBookSubjectCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+  	SELECT COUNT(*) 
+	FROM book
+	WHERE book.book_subject_id = #{bookSubjectId}
+  </select>
+  
+  <select id="findBookSubject" parameterType="com.tsjg.core.bean.Book" resultMap="BaseResultMap">
+  	SELECT * 
+	FROM book
+	WHERE book.book_subject_id = #{bookSubjectId}
+	<include refid="Limit"></include>
+  </select>
+  
+  <select id="findCountBook" resultType="java.lang.Integer">
+  	SELECT COUNT(*) FROM book
+  </select>
+  
+  <select id="findAllBook" parameterType="com.tsjg.core.bean.Book" resultMap="BaseResultMap">
+  	SELECT * FROM book 
+	<include refid="OrderBy"></include>
+	<include refid="Limit"></include>
+  </select>
+  
+  <delete id="deleteBatch" parameterType="java.lang.String">
+  	DELETE FROM book 
+  	<where>
+  		isbn IN
+  		<foreach collection="array" item="isbn" open="(" close=")" separator=",">
+  			#{isbn}
+  		</foreach>
+  	</where>
+  </delete>
+  
+</mapper>
