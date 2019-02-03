@@ -853,6 +853,66 @@ public class UserExample {
             addCriterion("college not between", value1, value2, "college");
             return (Criteria) this;
         }
+
+        public Criteria andIsReviewIsNull() {
+            addCriterion("is_review is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsReviewIsNotNull() {
+            addCriterion("is_review is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsReviewEqualTo(Integer value) {
+            addCriterion("is_review =", value, "isReview");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsReviewNotEqualTo(Integer value) {
+            addCriterion("is_review <>", value, "isReview");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsReviewGreaterThan(Integer value) {
+            addCriterion("is_review >", value, "isReview");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsReviewGreaterThanOrEqualTo(Integer value) {
+            addCriterion("is_review >=", value, "isReview");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsReviewLessThan(Integer value) {
+            addCriterion("is_review <", value, "isReview");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsReviewLessThanOrEqualTo(Integer value) {
+            addCriterion("is_review <=", value, "isReview");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsReviewIn(List<Integer> values) {
+            addCriterion("is_review in", values, "isReview");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsReviewNotIn(List<Integer> values) {
+            addCriterion("is_review not in", values, "isReview");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsReviewBetween(Integer value1, Integer value2) {
+            addCriterion("is_review between", value1, value2, "isReview");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsReviewNotBetween(Integer value1, Integer value2) {
+            addCriterion("is_review not between", value1, value2, "isReview");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

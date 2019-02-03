@@ -24,6 +24,7 @@ import com.tsjg.core.bean.BookExample;
 import com.tsjg.core.bean.BookPurchaseExample;
 import com.tsjg.core.bean.BookSubject;
 import com.tsjg.core.bean.BookSubjectExample;
+import com.tsjg.core.bean.BookUserdefined;
 import com.tsjg.core.bean.Mag;
 import com.tsjg.core.bean.MagCategory;
 import com.tsjg.core.bean.MagCategoryExample;
@@ -46,6 +47,7 @@ import com.tsjg.core.dao.MessageMapper;
 import com.tsjg.core.dao.UserMapper;
 import com.tsjg.core.service.BookService;
 import com.tsjg.core.service.UserService;
+import com.tsjg.core.web.Constans;
 import com.tsjg.core.web.GetUuid;
 
 @Controller
@@ -82,6 +84,35 @@ public class AdminController {
 	@RequestMapping(value = "/toLeft.do")
 	public String toLeft(){
 		return "left";
+	}
+	
+	@RequestMapping(value = "updateReview.do")
+	public void updateReview(boolean code, Integer userId){
+		User user = new User();
+		user.setUserId(userId);
+		if(code){
+			user.setIsReview(1);
+		}else{
+			user.setIsReview(2);
+		}
+		userMapper.updateUserReview(user);
+	}
+	
+	@RequestMapping(value = "review.do")
+	public String review(ModelMap model,Integer pageNo){
+		User user = new User();
+		user.setPageNo(Pagination.cpn(pageNo));
+		user.setPageSize(10);
+		user.setIsadministrator(0);
+		user.setIsReview(0);
+		user.setIsadministrator(0);
+		
+		Pagination users = userService.findUserReview(user);
+		String url = "/"+ Constans.PROJECT_NAME +"/backpage/review.do";
+		users.pageView(url, null);
+		
+		model.addAttribute("users", users);
+		return "manager";
 	}
 	
 	@RequestMapping(value = "message.do")
@@ -138,7 +169,7 @@ public class AdminController {
 		book.setPageNo(Pagination.cpn(pageNo));
 		book.setPageSize(7);
 		Pagination books = bookService.findAllBook(book);
-		String url = "/tsjg/backpage/toRight.do";
+		String url = "/"+ Constans.PROJECT_NAME +"/backpage/toRight.do";
 		books.pageView(url, null);
 		model.addAttribute("books", books);
 		return "right";
@@ -147,7 +178,7 @@ public class AdminController {
 	@RequestMapping(value = "/deleteBatchBook.do")
 	public String deleteBatchBook(String[] checkisbn,HttpServletResponse response){
 		bookService.deleteBatchBook(checkisbn);
-		return "redirect:/backpage/toRight.do";
+		return "redirect:/"+ Constans.PROJECT_NAME +"/backpage/toRight.do";
 	}
 	
 	@RequestMapping(value = "/deleteOneBook.do")
@@ -206,7 +237,7 @@ public class AdminController {
 			book.setPageSize(7);
 			
 			Pagination books = bookService.findAllBook(book);
-			String url = "/tsjg/backpage/toRight.do";
+			String url = "/"+ Constans.PROJECT_NAME +"/backpage/toRight.do";
 			books.pageView(url, null);
 			model.addAttribute("books", books);
 			return "right";
@@ -224,7 +255,7 @@ public class AdminController {
 		mag.setPageSize(7);
 		
 		Pagination mags = bookService.findAllMag(mag);
-		String url = "/tsjg/backpage/toMag.do";
+		String url = "/"+ Constans.PROJECT_NAME +"/backpage/toMag.do";
 		mags.pageView(url, null);
 		model.addAttribute("mags", mags);
 		return "mag";
@@ -246,7 +277,7 @@ public class AdminController {
 			mag.setPageSize(7);
 			
 			Pagination mags = bookService.findAllMag(mag);
-			String url = "/tsjg/backpage/toMag.do";
+			String url = "/"+ Constans.PROJECT_NAME +"backpage/toMag.do";
 			mags.pageView(url, null);
 			model.addAttribute("mags", mags);
 			return "mag";
@@ -286,7 +317,7 @@ public class AdminController {
 	@RequestMapping(value = "/deleteBatchMag.do")
 	public String deleteBatchMag(String[] checkissn,HttpServletResponse response){
 		bookService.deleteBatchMag(checkissn);
-		return "redirect:/backpage/toMag.do";
+		return "redirect:/"+ Constans.PROJECT_NAME +"/backpage/toMag.do";
 	}
 	
 	@RequestMapping(value = "/deleteOneMag.do")
@@ -308,7 +339,7 @@ public class AdminController {
 		user.setIsadministrator(0);
 		
 		Pagination users = userService.findAllPage(user);
-		String url = "/tsjg/backpage/toManager.do";
+		String url = "/"+ Constans.PROJECT_NAME +"/backpage/toManager.do";
 		users.pageView(url, null);
 		
 		model.addAttribute("users", users);
@@ -338,7 +369,7 @@ public class AdminController {
 			model.addAttribute("msg", "请选择搜索范围");
 			return "manager";
 		}
-		String url = "/tsjg/backpage/toManagerQuery.do";
+		String url = "/"+ Constans.PROJECT_NAME +"/backpage/toManagerQuery.do";
 		users.pageView(url, null);
 		
 		model.addAttribute("users", users);
@@ -352,7 +383,7 @@ public class AdminController {
 		MyBookPurchase mybookPurchase = new MyBookPurchase();
 		mybookPurchase.setPageNo(Pagination.cpn(pageNo));
 		mybookPurchase.setPageSize(14);
-		String url = "/tsjg/backpage/toBookPurchase.do";
+		String url = "/"+ Constans.PROJECT_NAME +"/backpage/toBookPurchase.do";
 		Pagination pagination = bookService.selectPurchaseBookList(mybookPurchase);
 		pagination.pageView(url, null);
 		model.addAttribute("pagination", pagination);
@@ -384,13 +415,13 @@ public class AdminController {
 	@RequestMapping(value = "/deleteBooks.do")
 	public String deleteBooks(String[] checkisbn,HttpServletResponse response){
 		bookService.deleteBooks(checkisbn);
-		return "redirect:/backpage/toBookPurchase.do";
+		return "redirect:/"+ Constans.PROJECT_NAME + "/backpage/toBookPurchase.do";
 	}
 	
 	@RequestMapping(value = "/deleteMags.do")
 	public String deleteMags(String[] checkissn,HttpServletResponse response){
 		bookService.deleteMags(checkissn);
-		return "redirect:/backpage/toMagPurchase.do";
+		return "redirect:/"+ Constans.PROJECT_NAME + "/backpage/toMagPurchase.do";
 	}
 	
 	@RequestMapping(value = "/exportBooks.do")
@@ -414,7 +445,7 @@ public class AdminController {
 		MagPurchase magPurchase = new MagPurchase();
 		magPurchase.setPageNo(Pagination.cpn(pageNo));
 		magPurchase.setPageSize(14);
-		String url = "/tsjg/backpage/toMagPurchase.do";
+		String url = "/"+ Constans.PROJECT_NAME + "/backpage/toMagPurchase.do";
 		Pagination pagination = bookService.selectPurchaseMagList(magPurchase);
 		pagination.pageView(url, null);
 		model.addAttribute("pagination", pagination);
@@ -423,11 +454,13 @@ public class AdminController {
 	
 	@RequestMapping(value = "/toBookZj.do")
 	public String toBookZj(ModelMap model,Integer pageNo){
-		
-		/*String url = "/tsjg/backpage/toBookPurchase.do";
-		Pagination pagination = bookService.selectPurchaseBookList(mybookPurchase);
+		BookUserdefined bookUserdefined = new BookUserdefined();
+		bookUserdefined.setPageNo(Pagination.cpn(pageNo));
+		bookUserdefined.setPageSize(14);
+		String url = "/"+ Constans.PROJECT_NAME +"/backpage/toBookZj.do";
+		Pagination pagination = userService.findUserBook(bookUserdefined);
 		pagination.pageView(url, null);
-		model.addAttribute("pagination", pagination);*/
+		model.addAttribute("pagination", pagination);
 		return "bookzj";
 	}
 	

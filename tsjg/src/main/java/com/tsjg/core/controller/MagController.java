@@ -10,6 +10,7 @@ import cn.itcast.common.page.Pagination;
 
 import com.tsjg.core.bean.Mag;
 import com.tsjg.core.service.BookService;
+import com.tsjg.core.web.Constans;
 
 @Controller
 public class MagController {
@@ -37,7 +38,7 @@ public class MagController {
 				mag.setMagPubcycle(inputValue);
 			}
 			Pagination pagination = bookService.findMagSearch(mag);
-			String url = "/tsjg/searchMag.shtml";
+			String url = "/"+ Constans.PROJECT_NAME +"/searchMag.shtml";
 			String params = "&choiseType=" + choiseType + "&inputValue=" + inputValue;
 			pagination.pageView(url, params);
 			
@@ -62,7 +63,7 @@ public class MagController {
 		mag.setMagCategoryId("1");
 		
 		Pagination pagination = bookService.findMagCategory(mag);
-		String url = "/tsjg/toMagCategory.shtml";
+		String url = "/"+ Constans.PROJECT_NAME +"/toMagCategory.shtml";
 		pagination.pageView(url, url);
 		
 		model.addAttribute("pagination", pagination);
@@ -77,7 +78,7 @@ public class MagController {
 		mag.setMagCategoryId(categoryId);
 		
 		Pagination pagination = bookService.findMagCategory(mag);
-		String url = "/tsjg/magCategory.shtml";
+		String url = "/"+ Constans.PROJECT_NAME +"/magCategory.shtml";
 		pagination.pageView(url, url);
 		
 		model.addAttribute("pagination", pagination);
@@ -94,7 +95,7 @@ public class MagController {
 		
 		Pagination pagination = bookService.findNewMags(mag);
 		
-		String url = "/tsjg/toNewMaglist.shtml";
+		String url = "/"+ Constans.PROJECT_NAME +"/toNewMaglist.shtml";
 		pagination.pageView(url, null);
 		model.addAttribute("pagination", pagination);
 		

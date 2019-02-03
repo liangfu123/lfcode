@@ -10,6 +10,7 @@ import cn.itcast.common.page.Pagination;
 import com.tsjg.core.bean.Book;
 import com.tsjg.core.bean.Mag;
 import com.tsjg.core.service.BookService;
+import com.tsjg.core.web.Constans;
 
 @Controller
 public class RankController {
@@ -28,7 +29,7 @@ public class RankController {
 		mag.setPageSize(8);
 		
 		Pagination pagination = bookService.findMagRank(mag);
-		String url = "/tsjg/toRankmag.shtml";
+		String url = "/"+ Constans.PROJECT_NAME +"/toRankmag.shtml";
 		pagination.pageView(url, url);
 		
 		model.addAttribute("pagination", pagination);
@@ -42,7 +43,7 @@ public class RankController {
 		book.setPageSize(15);
 		
 		Pagination pagination = bookService.findBookRank(book);
-		String url = "/tsjg/toRankbook.shtml";
+		String url = "/"+ Constans.PROJECT_NAME +"/toRankbook.shtml";
 		pagination.pageView(url, url);
 		
 		model.addAttribute("pagination", pagination);

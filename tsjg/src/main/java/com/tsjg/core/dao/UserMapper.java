@@ -8,6 +8,30 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface UserMapper {
+	void updateUserReview(User user);
+	
+	int findCountUserReview(User user); 
+	
+	List<User> findUserReview(User user);
+	
+	int findCountCollege(String college);
+	
+    List<User> findCollegePage(User user);
+    
+    int findCountType(String type);
+    
+    List<User> findTypePage(User user);
+    
+    int findCountSex(String sex);
+    
+    List<User> findSexPage(User user);
+    
+    int findCountPage(User user);
+    
+    List<User> findAllPage(User user);
+    
+    /*********************************/
+	
     long countByExample(UserExample example);
 
     int deleteByExample(UserExample example);
@@ -17,16 +41,7 @@ public interface UserMapper {
     int insert(User record);
 
     int insertSelective(User record);
-    
-    int findCountCollege(String college);
-    List<User> findCollegePage(User user);
-    int findCountType(String type);
-    List<User> findTypePage(User user);
-    int findCountSex(String sex);
-    List<User> findSexPage(User user);
-    int findCountPage(User user);
-    List<User> findAllPage(User user);
-    
+
     List<User> selectByExample(UserExample example);
 
     User selectByPrimaryKey(Integer userId);

@@ -11,4 +11,6 @@ public interface Constans {
 	
 	public static final String IMAGE_SERVER = "http://localhost:8024/image-web/";
 	
+	public static final String PROJECT_NAME = "tsjg";
+	
 }

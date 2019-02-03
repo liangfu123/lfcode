@@ -80,13 +80,18 @@ public class ReaderController {
 	@Autowired
 	private MagCollectionMapper magCollectionMapper;
 	
-	@RequestMapping(value = "/magJg.shtml")
-	public void magJg(String magIssn,Integer userId,HttpServletResponse response){
+	@RequestMapping(value = "/jg/magJg.shtml")
+	public void magJg(String magIssn,Integer userId,HttpServletResponse response,HttpServletRequest request){
 		MagJgExample magJgExample = new MagJgExample();
 		magJgExample.createCriteria().andMagIssnEqualTo(magIssn).andUserIdEqualTo(userId);
 		List<MagJg> mgm = magJgMapper.selectByExample(magJgExample);
 		
-		if(mgm  != null && !mgm.isEmpty()){
+		boolean flag = (Boolean) request.getAttribute("flag");
+		if(flag){
+			JSONObject jo = new JSONObject();
+			jo.put("msg", "您没有完善个人资料，请到个人中心完善资料后荐购！");
+			ResponseUtils.renderJson(response, jo.toString());
+		}else if(mgm  != null && !mgm.isEmpty()){
 			JSONObject jo = new JSONObject();
 			jo.put("msg", "你已推荐过此期刊，请勿重复荐购！");
 			ResponseUtils.renderJson(response, jo.toString());
@@ -115,13 +120,18 @@ public class ReaderController {
 		}
 	}
 	
-	@RequestMapping(value = "/bookJg.shtml")
-	public void bookJg(String isbn,Integer userId,HttpServletResponse response){
+	@RequestMapping(value = "/jg/bookJg.shtml")
+	public void bookJg(String isbn,Integer userId,HttpServletResponse response,HttpServletRequest request){
 		BookJgExample bookJgExample = new BookJgExample();
 		bookJgExample.createCriteria().andIsbnEqualTo(isbn).andUserIdEqualTo(userId);
 		List<BookJg> bjm = bookJgMapper.selectByExample(bookJgExample);
 		
-		if(bjm  != null && !bjm.isEmpty()){
+		boolean flag = (Boolean) request.getAttribute("flag");
+		if(flag){
+			JSONObject jo = new JSONObject();
+			jo.put("msg", "您没有完善个人资料，请到个人中心完善资料后荐购！");
+			ResponseUtils.renderJson(response, jo.toString());
+		}else if(bjm  != null && !bjm.isEmpty()){
 			JSONObject jo = new JSONObject();
 			jo.put("msg", "你已推荐过此书，请勿重复荐购！");
 			ResponseUtils.renderJson(response, jo.toString());
@@ -218,7 +228,7 @@ public class ReaderController {
 		return "reader";
 	}
 	
-	@RequestMapping(value = "/readerBookJg.shtml",method = RequestMethod.POST)
+	@RequestMapping(value = "/jg/readerBookJg.shtml",method = RequestMethod.POST)
 	public void readerBookJg(BookUserdefined bookUserdefined,HttpServletResponse response,HttpServletRequest request){
 		User user = (User)sessionProvider.getAttribute(request, Constans.USER_SESSION);
 		bookUserdefined.setUserId(user.getUserId());
@@ -227,6 +237,12 @@ public class ReaderController {
 		BookCollectionExample bookCollectionExample = new BookCollectionExample();
 		bookCollectionExample.createCriteria().andIsbnEqualTo(bookUserdefined.getIsbn());
 		List<BookCollection> bc = bookCollectionMapper.selectByExample(bookCollectionExample);
+		
+		boolean flag = (Boolean) request.getAttribute("flag");
+		if(flag){
+			ResponseUtils.renderText(response, "您没有完善个人资料，请到个人中心完善资料后荐购！");
+			return ;
+		}
 		
 		if(bc != null && !bc.isEmpty()){
 			ResponseUtils.renderText(response, "该书图书馆已有，可到图书馆阅读");
@@ -257,14 +273,14 @@ public class ReaderController {
 		bookUserdefined.setUserId(user.getUserId());
 		
 		Pagination pagination = bookService.findUserBookJg(bookUserdefined, user.getUserId());
-		String url = "/tsjg/toReaderBookJg.shtml";
+		String url = "/"+ Constans.PROJECT_NAME +"/toReaderBookJg.shtml";
 		pagination.pageView(url, null);
 		
 		model.addAttribute("pagination", pagination);
 		return "readerbookjg";
 	}
 	
-	@RequestMapping(value = "/readerMagJg.shtml",method = RequestMethod.POST)
+	@RequestMapping(value = "/jg/readerMagJg.shtml",method = RequestMethod.POST)
 	public void readerMagJg(MagUserdefined magUserdefined,HttpServletResponse response,HttpServletRequest request){
 		User user = (User)sessionProvider.getAttribute(request, Constans.USER_SESSION);
 		magUserdefined.setIsget(0);
@@ -274,6 +290,12 @@ public class ReaderController {
 		MagCollectionExample magCollectionExample = new MagCollectionExample();
 		magCollectionExample.createCriteria().andIssnEqualTo(magUserdefined.getMagIssn());
 		List<MagCollection> mc = magCollectionMapper.selectByExample(magCollectionExample);
+		
+		boolean flag = (Boolean) request.getAttribute("flag");
+		if(flag){
+			ResponseUtils.renderText(response, "您没有完善个人资料，请到个人中心完善资料后荐购！");
+			return ;
+		}
 		
 		if(mc != null && !mc.isEmpty()){
 			ResponseUtils.renderText(response, "该期刊图书馆已有，可到图书馆阅读");
@@ -304,7 +326,7 @@ public class ReaderController {
 		magUserdefined.setUserId(user.getUserId());
 		
 		Pagination pagination = bookService.findUserMagJg(magUserdefined, user.getUserId());
-		String url = "/tsjg/toReaderMagJg.shtml";
+		String url = "/"+ Constans.PROJECT_NAME +"/toReaderMagJg.shtml";
 		pagination.pageView(url, null);
 		
 		model.addAttribute("pagination", pagination);
@@ -326,7 +348,7 @@ public class ReaderController {
 		book.setBookJg(bookJg);
 		
 		Pagination pagination = bookService.findReaderBook(book,userId);
-		String url = "/tsjg/toReaderBook.shtml";
+		String url = "/"+ Constans.PROJECT_NAME +"/toReaderBook.shtml";
 		pagination.pageView(url, null);
 		
 		model.addAttribute("pagination", pagination);
@@ -347,7 +369,7 @@ public class ReaderController {
 		mag.setMagJg(magJg);
 		
 		Pagination pagination = bookService.findReaderMag(mag, userId);
-		String url = "/tsjg/toReaderMag.shtml";
+		String url = "/"+ Constans.PROJECT_NAME +"/toReaderMag.shtml";
 		pagination.pageView(url, null);
 		
 		model.addAttribute("pagination", pagination);

@@ -1,4 +1,14 @@
 @CHARSET "UTF-8";
+.shenhe {
+	display: flex;
+	width: 650px;
+	justify-content: space-between;
+}
+.shenhe > span {
+	display: inline-block;
+	margin-left: 60px;
+	line-height: 46px;
+}
 .redpoint{
 	display:inline-block;
 	text-align:center;
@@ -58,7 +68,7 @@
 	left:410px;
 	width: 540px;
 	height: 450px;
-	background-color: rgba(255,255,255,0.5);
+	background-color: rgba(255,255,255,0.7);
 }
 .register_a{
 	width: 465px;
@@ -66,6 +76,7 @@
 	margin-left: 20px;
 	margin-top:10px;
 	text-align: right;
+	font-size: 17px;
 }
 .register_form{
 	width:400px;
@@ -119,6 +130,9 @@
 .book_img_box img{
 	width: 360px;
 	height: 420px;
+}
+.mybtn{
+	width: 200px;
 }
 .book_details{
 	width: 665px;

@@ -1,6 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/common/common.jsp" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -116,19 +117,19 @@
 								</div>
 							</td>
 							<td>
-								<a href="javascript:void(0);" onclick="window.open('${pageContext.request.contextPath}/toBookDetails.shtml?isbn=${entry.isbn }')">${entry.book.bookName } </a>
+								<a href="javascript:void(0);" onclick="window.open('${pageContext.request.contextPath}/toBookDetails.shtml?isbn=${entry.isbn }')">${entry.bookUdName } </a>
 							</td>
 							<td>
-								${entry.book.bookAuthor }
+								${entry.bookUdAuthor }
 							</td>
 							<td width="120px">
 								${entry.isbn }
 							</td>
 							<td>
-								${entry.book.bookPublish }
+								${entry.bookUdPublish }
 							</td>
 							<td width="80px">
-								${entry.book.bookNum }
+								<fmt:formatDate value="${entry.bookUdPubtime }" pattern="yyyy-MM-dd"/>
 							</td>
 							<td width="55px">
 								<a href="javascript:void(0);" onclick="delOne('${entry.isbn }')" role="button">删除</a>

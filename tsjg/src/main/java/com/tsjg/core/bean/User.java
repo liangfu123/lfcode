@@ -25,8 +25,10 @@ public class User implements Serializable {
     private String type;
 
     private String college;
-    
-	public Integer getUserId() {
+
+    private Integer isReview;
+
+    public Integer getUserId() {
         return userId;
     }
 
@@ -114,21 +116,14 @@ public class User implements Serializable {
         this.college = college == null ? null : college.trim();
     }
 
+    public Integer getIsReview() {
+        return isReview;
+    }
 
-
-@Override
-	public String toString() {
-		return "User [userId=" + userId + ", username=" + username
-				+ ", password=" + password + ", isadministrator="
-				+ isadministrator + ", realname=" + realname + ", sex=" + sex
-				+ ", phone=" + phone + ", email=" + email + ", qq=" + qq
-				+ ", type=" + type + ", college=" + college + ", pageNo="
-				+ pageNo + ", startRow=" + startRow + ", pageSize=" + pageSize
-				+ "]";
-	}
-
-
-
+    public void setIsReview(Integer isReview) {
+        this.isReview = isReview;
+    }
+    
 /*************************page****************************/
 	
 	//页号:1,2,3,4......

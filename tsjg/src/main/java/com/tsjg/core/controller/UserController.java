@@ -218,6 +218,9 @@ public class UserController {
 						if(sessionProvider.getAttribute(request, "key").equals(verifycode)){
 							sessionProvider.setAttribute(request, Constans.USER_SESSION, user);
 							if(user.getIsadministrator() == 0){
+								if(user.getRealname() == null || user.getSex() == null || user.getPhone() == null || user.getEmail() == null || user.getQq() == null || user.getType() == null || user.getCollege() == null ){
+									return  "personal";
+								}
 								return "main";
 							}else{
 								return "redirect:/backpage/toMain.do";

@@ -43,6 +43,7 @@
     		<table style="margin-top: 20px;">
     			<tr style="height: 25px;">
     			<td style="width: 130px;text-align: right;"><img src="${pageContext.request.contextPath}/img/style.png">&nbsp;&nbsp;<label>完善资料</label></td>
+    			<td style="width: 400px;text-align: right;">友情提示：完善所有个人信息才能进行图书荐购!</td>
     			</tr>
     		</table>
     		<hr>
@@ -75,7 +76,13 @@
     		</table>
     		
     		<br>
-   			<div style="margin-left: 510px;">
+   			<div class="shenhe" >
+   				<span>
+   					管理员审核个人资料结果：
+   				<c:if test="${user_session.isReview == 2}"><label style="color: red;">审核不通过，请检查个人资料是否属实！</label></c:if>
+				<c:if test="${user_session.isReview == 1}">审核通过</c:if>
+				<c:if test="${user_session.isReview == 0}"><label style="color: orange;">待审核</label></c:if>
+   				</span>
    				<!-- Button trigger modal -->
 				<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
 				  编辑个人资料

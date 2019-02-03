@@ -9,8 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import cn.itcast.common.page.Pagination;
 
+import com.tsjg.core.bean.BookUserdefined;
 import com.tsjg.core.bean.User;
 import com.tsjg.core.bean.UserMessage;
+import com.tsjg.core.dao.MyBookUdMapper;
 import com.tsjg.core.dao.UserMapper;
 import com.tsjg.core.dao.UserMessageMapper;
 
@@ -21,6 +23,8 @@ public class UserServiceImpl implements UserService {
 	private UserMapper userMapper;
 	@Resource
 	private UserMessageMapper userMessageMapper;
+	@Resource
+	private MyBookUdMapper myBookUdMapper;
 	
 	public Pagination findAllPage(User user) {
 		Pagination pagination = new Pagination(user.getPageNo(), user.getPageSize(), userMapper.findCountPage(user));
@@ -56,6 +60,18 @@ public class UserServiceImpl implements UserService {
 
 	public List<UserMessage> findUserAllMsg(Integer userId) {
 		return userMessageMapper.findUserAllMsg(userId);
+	}
+
+	public Pagination findUserBook(BookUserdefined bookUserdefined) {
+		Pagination pagination = new Pagination(bookUserdefined.getPageNo(), bookUserdefined.getPageSize(), myBookUdMapper.findUserBookCount());
+		pagination.setList(myBookUdMapper.findUserBook(bookUserdefined));
+		return pagination;
+	}
+
+	public Pagination findUserReview(User user) {
+		Pagination pagination = new Pagination(user.getPageNo(), user.getPageSize(), userMapper.findCountUserReview(user));
+		pagination.setList(userMapper.findUserReview(user));
+		return pagination;
 	}
 
 }

@@ -19,6 +19,13 @@
 	
 	<mvc:annotation-driven conversion-service="conversionService"></mvc:annotation-driven>  
 	
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/jg/*.shtml"/>
+			<bean class="com.tsjg.core.web.SpringmvcInterceptor"></bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
+	
 	<!--配置自定义日期转换器 -->
     <bean id="conversionService"
           class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
@@ -31,10 +38,16 @@
     </bean>
 	
 	<!-- 映射器 -->
-	<!-- <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"></bean> -->
+	<!-- <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<bean class="com.tsjg.core.web.SpringmvcInterceptor"></bean>
+			</list>
+		</property>
+	</bean>
 	
-	<!-- 适配器 -->
-	<!-- <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"></bean> -->
+	适配器
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"></bean> -->
 	
 	<!-- jsp视图解析器  InternalResourceViewResolver视图解析器 -->
 	<bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">

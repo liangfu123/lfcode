@@ -10,6 +10,7 @@ import cn.itcast.common.page.Pagination;
 
 import com.tsjg.core.bean.Book;
 import com.tsjg.core.service.BookService;
+import com.tsjg.core.web.Constans;
 
 @Controller
 public class BookController {
@@ -38,7 +39,7 @@ public class BookController {
 				book.setBookPublish(inputValue);
 			}
 			Pagination pagination = bookService.findBookSearch(book);
-			String url = "/tsjg/searchBook.shtml";
+			String url = "/"+ Constans.PROJECT_NAME +"/searchBook.shtml";
 			String params = "&choiseType=" + choiseType + "&inputValue=" + inputValue;
 			pagination.pageView(url, params);
 			
@@ -89,7 +90,7 @@ public class BookController {
 		}
 		
 		Pagination pagination = bookService.findMultiBookSearch(book);
-		String url = "/tsjg/multiSearchBook.shtml";
+		String url = "/"+ Constans.PROJECT_NAME +"/multiSearchBook.shtml";
 		pagination.pageView(url, params.toString());
 		
 		model.addAttribute("pagination", pagination);
@@ -103,7 +104,7 @@ public class BookController {
 		book.setPageSize(15);
 		book.setBookCnclassLetter("A");
 		
-		String url = "/tsjg/bookCnclass.shtml";
+		String url = "/"+ Constans.PROJECT_NAME +"/bookCnclass.shtml";
 		Pagination pagination = bookService.findBookCnclass(book);
 		pagination.pageView(url, null);
 		
@@ -119,7 +120,7 @@ public class BookController {
 		book.setPageSize(15);
 		book.setBookCnclassLetter(bookCnclassLetter);
 		
-		String url = "/tsjg/bookCnclass.shtml";
+		String url = "/"+ Constans.PROJECT_NAME +"/bookCnclass.shtml";
 		Pagination pagination = bookService.findBookCnclass(book);
 		pagination.pageView(url, null);
 		
@@ -135,7 +136,7 @@ public class BookController {
 		book.setPageSize(15);
 		book.setBookSubjectId(1);
 		
-		String url = "/tsjg/toBooksubject.shtml";
+		String url = "/"+ Constans.PROJECT_NAME +"/toBooksubject.shtml";
 		Pagination pagination = bookService.findBookSubject(book);
 		pagination.pageView(url, null);
 		
@@ -150,7 +151,7 @@ public class BookController {
 		book.setPageSize(15);
 		book.setBookSubjectId(subjectId);
 		
-		String url = "/tsjg/booksubject.shtml";
+		String url = "/"+ Constans.PROJECT_NAME +"/booksubject.shtml";
 		Pagination pagination = bookService.findBookSubject(book);
 		pagination.pageView(url, null);
 		
@@ -165,7 +166,7 @@ public class BookController {
 		book.setPageSize(14);
 		book.setBookCategoryId(1);
 		
-		String url = "/tsjg/toBookcategory.shtml";
+		String url = "/"+ Constans.PROJECT_NAME +"/toBookcategory.shtml";
 		Pagination pagination = bookService.findBookCategory(book);
 		pagination.pageView(url, null);
 		
@@ -180,7 +181,7 @@ public class BookController {
 		book.setPageSize(14);
 		book.setBookCategoryId(categoryId);;
 		
-		String url = "/tsjg/bookcategory.shtml";
+		String url = "/"+ Constans.PROJECT_NAME +"/bookcategory.shtml";
 		Pagination pagination = bookService.findBookCategory(book);
 		pagination.pageView(url, null);
 		
@@ -201,7 +202,7 @@ public class BookController {
 		
 		Pagination pagination = bookService.findNewBooks(book);
 		
-		String url = "/tsjg/toNewbooklist.shtml";
+		String url = "/"+ Constans.PROJECT_NAME +"/toNewbooklist.shtml";
 		pagination.pageView(url, null);
 		model.addAttribute("pagination", pagination);
 		

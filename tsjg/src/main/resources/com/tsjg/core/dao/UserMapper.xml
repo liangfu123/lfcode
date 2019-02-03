@@ -13,7 +13,7 @@
     <result column="qq" jdbcType="VARCHAR" property="qq" />
     <result column="type" jdbcType="VARCHAR" property="type" />
     <result column="college" jdbcType="VARCHAR" property="college" />
-    <!-- <result column="msg_id" property="msgId" /> -->
+    <result column="is_review" jdbcType="INTEGER" property="isReview" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -75,12 +75,24 @@
   </sql>
   <sql id="Base_Column_List">
     user_id, username, password, isAdministrator, realname, sex, phone, email, qq, type, 
-    college
+    college, is_review
   </sql>
+  
+  <!-- ******************** -->
   <sql id="Limit">
   	LIMIT #{startRow},#{pageSize}
   </sql>
   
+  <update id="updateUserReview" parameterType="com.tsjg.core.bean.User">
+  	UPDATE USER SET is_review = #{isReview} WHERE user_id = #{userId}
+  </update>
+  <select id="findCountUserReview" parameterType="com.tsjg.core.bean.User" resultType="java.lang.Integer">
+  	SELECT COUNT(*) FROM USER WHERE is_review = #{isReview} AND isAdministrator = #{isadministrator}
+  </select>
+  <select id="findUserReview" parameterType="com.tsjg.core.bean.User" resultMap="BaseResultMap">
+  	SELECT * FROM USER WHERE is_review = #{isReview} AND isAdministrator = #{isadministrator}
+	<include refid="Limit"></include>
+  </select>
   <select id="findCountCollege" parameterType="java.lang.String" resultType="Integer">
   	SELECT COUNT(*) FROM USER WHERE type = #{college}
   </select>
@@ -109,6 +121,7 @@
   	select * from user where isAdministrator = #{isadministrator}
   	<include refid="Limit"></include>
   </select>
+  <!-- ******************** -->
   
   <select id="selectByExample" parameterType="com.tsjg.core.bean.UserExample" resultMap="BaseResultMap">
     select
@@ -144,11 +157,11 @@
     insert into user (user_id, username, password, 
       isAdministrator, realname, sex, 
       phone, email, qq, type, 
-      college)
+      college, is_review)
     values (#{userId,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{isadministrator,jdbcType=INTEGER}, #{realname,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, 
       #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{qq,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
-      #{college,jdbcType=VARCHAR})
+      #{college,jdbcType=VARCHAR}, #{isReview,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.tsjg.core.bean.User">
     insert into user
@@ -186,6 +199,9 @@
       <if test="college != null">
         college,
       </if>
+      <if test="isReview != null">
+        is_review,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="userId != null">
@@ -220,6 +236,9 @@
       </if>
       <if test="college != null">
         #{college,jdbcType=VARCHAR},
+      </if>
+      <if test="isReview != null">
+        #{isReview,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -265,6 +284,9 @@
       <if test="record.college != null">
         college = #{record.college,jdbcType=VARCHAR},
       </if>
+      <if test="record.isReview != null">
+        is_review = #{record.isReview,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -282,7 +304,8 @@
       email = #{record.email,jdbcType=VARCHAR},
       qq = #{record.qq,jdbcType=VARCHAR},
       type = #{record.type,jdbcType=VARCHAR},
-      college = #{record.college,jdbcType=VARCHAR}
+      college = #{record.college,jdbcType=VARCHAR},
+      is_review = #{record.isReview,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -320,6 +343,9 @@
       <if test="college != null">
         college = #{college,jdbcType=VARCHAR},
       </if>
+      <if test="isReview != null">
+        is_review = #{isReview,jdbcType=INTEGER},
+      </if>
     </set>
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
@@ -334,7 +360,8 @@
       email = #{email,jdbcType=VARCHAR},
       qq = #{qq,jdbcType=VARCHAR},
       type = #{type,jdbcType=VARCHAR},
-      college = #{college,jdbcType=VARCHAR}
+      college = #{college,jdbcType=VARCHAR},
+      is_review = #{isReview,jdbcType=INTEGER}
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
 </mapper>

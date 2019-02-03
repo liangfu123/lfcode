@@ -22,7 +22,7 @@
 	}
 	
 	function jgBtn(isbn,userId){
-		var url = "${pageContext.request.contextPath}/bookJg.shtml";
+		var url = "${pageContext.request.contextPath}/jg/bookJg.shtml";
 		var params = {"isbn":isbn,"userId":userId};
 		$.post(url,params,function(data){
 			alert(data.msg);
@@ -47,7 +47,7 @@
 			<div class="book_details">
 				<table class="book_details_table">
 					<tr>
-						<td style="width: 140px;text-align: right;">题名:&nbsp;&nbsp;&nbsp;&nbsp;</td>
+						<td style="width: 111px;text-align: right;">题名:&nbsp;&nbsp;&nbsp;&nbsp;</td>
 						<td>${bookinfo.bookName }</td>
 						
 						<td style="text-align: right;">页数:&nbsp;&nbsp;&nbsp;&nbsp;</td>
@@ -68,11 +68,15 @@
 						<td>${bookinfo.bookPubtime }</td>
 					</tr>
 					<tr>
-						<td style="text-align: right;">学科分类:&nbsp;&nbsp;&nbsp;&nbsp;</td>
-						<td>${bookinfo.bookSubjectName }</td>
+						<td style="text-align: right;">中图分类:&nbsp;&nbsp;&nbsp;&nbsp;</td>
+						<td>${bookinfo.bookCnclassLetter }</td>
 						
-						<td style="text-align: right;">普通分类:&nbsp;&nbsp;&nbsp;&nbsp;</td>
-						<td>${bookinfo.bookCategoryName }</td>
+						<td style="text-align: right;">定价:&nbsp;&nbsp;&nbsp;&nbsp;</td>
+						<td>${bookinfo.bookPrice }</td>
+					</tr>
+					<tr>
+						<td style="text-align: right;">荐购次数:&nbsp;&nbsp;&nbsp;&nbsp;</td>
+						<td>${bookinfo.bookNum }</td>
 					</tr>
 				</table>
 				
@@ -92,8 +96,7 @@
 				<table class="book_details_button">
 					<tr>
 						<td>
-							<a class="btn btn-default" href="javascript:void(0);" onclick="jgBtn('${bookinfo.isbn }','${user_session.userId }')" role="button">荐购</a>&nbsp;&nbsp;
-							<a class="btn btn-default" href="javascript:void(0);" onclick="window.location.href='${pageContext.request.contextPath }/toMainFront.shtml'" role="button">返回</a>
+							<a class="btn btn-default mybtn" href="javascript:void(0);" onclick="jgBtn('${bookinfo.isbn }','${user_session.userId }')" role="button">荐购</a>&nbsp;&nbsp;
 						</td>
 					</tr>
 				</table>

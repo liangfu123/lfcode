@@ -11,6 +11,15 @@
 <title>用户管理</title>
 
 <script type="text/javascript">
+	function review(id){
+		var con = confirm("审核是否通过");
+		var url = "${pageContext.request.contextPath}/backpage/updateReview.do";
+		var params = {"code" : con, "userId" : id};
+		$.post(url,params,function (){
+
+		});
+	}
+
 	function changeCode(code){
 		if(code == "性别"){
 			var obj = document.getElementById("change");
@@ -75,6 +84,9 @@
 						<td width="90px">
 							<input style="margin-left: 10px;" class="btn btn-default" type="submit" value="检索">
 						</td>
+						<td>
+							<a type="button" class="btn btn-info" onclick="window.location.href='${pageContext.request.contextPath}/backpage/review.do'">待审核用户</a>
+						</td>
 						<td width="310px">
 							<p style="color: red;margin-top: 10px;">${msg }</p> 
 						</td>
@@ -108,6 +120,9 @@
 					<td>
 						所属学院
 					</td>
+					<td>
+						审核状态
+					</td>
 				</tr>
 				
 				<c:forEach items="${users.list }" var="entry">
@@ -135,6 +150,11 @@
 						</td>
 						<td>
 							${entry.college }
+						</td>
+						<td>
+							<c:if test="${entry.isReview == 1}">审核通过</c:if>
+							<c:if test="${entry.isReview == 0}"><a href="javascript:void(0);" onclick="review('${entry.userId }')">待审核</a></c:if>
+							<c:if test="${entry.isReview == 2}"><label style="color: red;">审核不通过</label></c:if>
 						</td>
 					</tr>
 				</c:forEach>

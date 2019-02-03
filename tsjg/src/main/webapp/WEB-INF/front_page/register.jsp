@@ -10,35 +10,35 @@
 <title>注册</title>
 </head>
 <body>
-	<div class="register_big" style="background-image:url(${pageContext.request.contextPath }/img/register.jpg)">
+	<div class="register_big" style="background-image:url(${pageContext.request.contextPath }/img/login.gif)">
 		<div class="register_small"><br>
 			<label style="font-size: 36px;margin-left: 110px;color: #F75000;"><span style="font-size: 26px;">图书荐购系统</span> | 用户注册</label>
 			<div class="register_a"><a href="javascript:void(0);" onclick="window.location.href='${pageContext.request.contextPath }/toLogin.shtml'">登录</a></div>
 			<div class="register_form">
 				<form action="${pageContext.request.contextPath }/register.shtml" method="post" class="form-horizontal">
 				  <div style="width: 400px;" class="form-group">
-				    <label for="inputEmail3" class="col-sm-2 control-label"></label>
+				    <label for="inputEmail3" style="width: 22%;" class="col-sm-2 control-label">用户名</label>
 				    <div style="width: 300px" class="col-sm-10">
 				      <input type="text" class="form-control" id="inputEmail3" name="username" placeholder="学号/工号/手机号">
 				    </div>
 				  </div>
 				  
 				  <div style="width: 400px;" class="form-group">
-				    <label for="inputPassword3" class="col-sm-2 control-label"></label>
+				    <label for="inputPassword3" style="width: 22%;" class="col-sm-2 control-label">密码</label>
 				    <div style="width: 300px" class="col-sm-10">
 				      <input type="password" class="form-control" id="inputPassword3" name="password" placeholder="密码">
 				    </div>
 				  </div>
 				  
 				  <div style="width: 400px;" class="form-group">
-				    <label for="inputPassword3" class="col-sm-2 control-label"></label>
+				    <label for="inputPassword3" style="width: 22%;" class="col-sm-2 control-label">确认密码</label>
 				    <div style="width: 300px" class="col-sm-10">
-				      <input type="password" class="form-control" id="inputPassword3" name="verifypwd" placeholder="确认密码">
+				     <input type="password" class="form-control" id="inputPassword3" name="verifypwd" placeholder="确认密码">
 				    </div>
 				  </div>
 				  
 				  <div style="width: 400px;" class="form-group">
-				    <label for="inputPassword3" class="col-sm-2 control-label"></label>
+				    <label for="inputPassword3" style="width: 22%;" class="col-sm-2 control-label">验证码</label>
 				    <div style="width: 200px" class="col-sm-10">
 				      <input id="vCode" type="text" class="form-control" name="verifycode" placeholder="验证码">  
 				    </div>
@@ -46,8 +46,8 @@
 				      onclick="javascript:document.getElementById('vcode_img').src='${pageContext.request.contextPath}/validatecode.jsp?'+new Date();">
 				  </div>
 				  
-				  <div style="width: 400px;" class="form-group">
-				    <div style="width: 270px;" class="col-sm-offset-2 col-sm-10">
+				  <div style="width: 370px;" class="form-group">
+				    <div style="width: 270px;margin-left: 85px;" class="col-sm-offset-2 col-sm-10">
 				      <button style="width: 270px;background:#ffcc66;" type="submit" class="btn btn-default">注册</button>
 				    </div>
 				  </div>

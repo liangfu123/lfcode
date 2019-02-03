@@ -89,6 +89,10 @@ public class ExcelUtilImpl implements ExcelUtil {
 	                	   book.setBookNumberpage(cell.getStringCellValue());//页数
 	                   }else if(c==6){
 	                	   book.setBookPubtime(cell.getStringCellValue());//出版时间
+	                   }else if(c==7){
+	                	   book.setBookPrice(cell.getStringCellValue());//图书定价
+	                   }else if(c==8){
+	                	   book.setBookCnclassLetter(cell.getStringCellValue());//图书定价
 	                   }
 	               }
 	           }
@@ -157,6 +161,8 @@ public class ExcelUtilImpl implements ExcelUtil {
 	                	   mag.setMagPubcycle(cell.getStringCellValue());//出版周期
 	                   }else if(c==7){
 	                	   mag.setMagIntro(cell.getStringCellValue());//期刊简介
+	                   }else if(c==8){
+	                	   mag.setMagPrice(cell.getStringCellValue());//期刊价格
 	                   }
 	               }
 	           }

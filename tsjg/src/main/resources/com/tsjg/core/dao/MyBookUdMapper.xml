@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsjg.core.dao.MyBookUdMapper">
+  <resultMap id="BaseResultMap" type="com.tsjg.core.bean.BookUserdefined">
+    <id column="book_userdefined_id" jdbcType="INTEGER" property="bookUserdefinedId" />
+    <result column="book_ud_name" jdbcType="VARCHAR" property="bookUdName" />
+    <result column="book_ud_author" jdbcType="VARCHAR" property="bookUdAuthor" />
+    <result column="book_ud_publish" jdbcType="VARCHAR" property="bookUdPublish" />
+    <result column="isbn" jdbcType="VARCHAR" property="isbn" />
+    <result column="book_ud_pubtime" jdbcType="TIMESTAMP" property="bookUdPubtime" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="book_jg_time" jdbcType="TIMESTAMP" property="bookJgTime" />
+    <result column="isget" jdbcType="INTEGER" property="isget" />
+  </resultMap>
+  
+  <sql id="limit">
+  	limit #{startRow},#{pageSize}
+  </sql>
+  <sql id="orderby">
+  	ORDER BY book_jg_time
+  </sql>
+  
+  <select id="findUserBookCount" resultType="java.lang.Integer">
+  	SELECT COUNT(*) FROM book_userdefined
+  </select>
+  
+  <select id="findUserBook" parameterType="com.tsjg.core.bean.BookUserdefined" resultMap="BaseResultMap">
+  	SELECT * FROM book_userdefined
+  	<include refid="orderby"></include>
+  	<include refid="limit"></include>
+  </select>
+  
+</mapper>

@@ -36,7 +36,7 @@
         
         //定义参数
         var options = {
-        		url : "${pageContext.request.contextPath}/readerBookJg.shtml",
+        		url : "${pageContext.request.contextPath}/jg/readerBookJg.shtml",
         		type : "post",
         		dataType:"text",
         		data : $("#jvForm").serialize(),

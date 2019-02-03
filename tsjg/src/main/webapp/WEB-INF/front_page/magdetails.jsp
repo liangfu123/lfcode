@@ -22,7 +22,7 @@
 		}
 	
 	function jgBtn(magIssn,userId){
-		var url = "${pageContext.request.contextPath}/magJg.shtml";
+		var url = "${pageContext.request.contextPath}/jg/magJg.shtml";
 		var params = {"magIssn":magIssn,"userId":userId};
 		$.post(url,params,function(data){
 			alert(data.msg);

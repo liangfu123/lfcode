@@ -41,7 +41,7 @@
         
         //定义参数
         var options = {
-        		url : "${pageContext.request.contextPath}/readerMagJg.shtml",
+        		url : "${pageContext.request.contextPath}/jg/readerMagJg.shtml",
         		type : "post",
         		dataType:"text",
         		data : $("#jvForm").serialize(),
