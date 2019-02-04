@@ -12,7 +12,7 @@
 <title>图书自荐</title>
 <script type="text/javascript">
 	function delOne(isbn){
-		var url = "${pageContext.request.contextPath}/backpage/deleteBook.do";
+		var url = "${pageContext.request.contextPath}/backpage/deleteBookZj.do";
 		var params = {"isbn":isbn};
 		$.post(url,params,function (data){
 			if(data.result == 1 ){
@@ -39,7 +39,7 @@
 			return false;
 		}
 		
-		$("#jvFormDel").attr("action","${pageContext.request.contextPath }/backpage/deleteBooks.do");
+		$("#jvFormDel").attr("action","${pageContext.request.contextPath }/backpage/deleteBooksZj.do");
 		$("#jvFormDel").attr("method","post").submit();
 	}
 	
@@ -71,7 +71,7 @@
 							<a class="btn btn-default" href="javascript:void(0);" onclick="deletes()" role="button">删除</a>
 						</td>
 						<td width="70px">
-							<a class="btn btn-default" href="${pageContext.request.contextPath}/backpage/toBookPurchase.do" target="rightFrameBack" role="button">刷新</a>
+							<a class="btn btn-default" href="${pageContext.request.contextPath}/backpage/toBookZj.do" target="rightFrameBack" role="button">刷新</a>
 						</td>
 					</tr>
 				</table>
@@ -117,7 +117,7 @@
 								</div>
 							</td>
 							<td>
-								<a href="javascript:void(0);" onclick="window.open('${pageContext.request.contextPath}/toBookDetails.shtml?isbn=${entry.isbn }')">${entry.bookUdName } </a>
+								${entry.bookUdName }
 							</td>
 							<td>
 								${entry.bookUdAuthor }

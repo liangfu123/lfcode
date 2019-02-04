@@ -25,12 +25,15 @@ import com.tsjg.core.bean.BookPurchaseExample;
 import com.tsjg.core.bean.BookSubject;
 import com.tsjg.core.bean.BookSubjectExample;
 import com.tsjg.core.bean.BookUserdefined;
+import com.tsjg.core.bean.BookUserdefinedExample;
 import com.tsjg.core.bean.Mag;
 import com.tsjg.core.bean.MagCategory;
 import com.tsjg.core.bean.MagCategoryExample;
 import com.tsjg.core.bean.MagExample;
 import com.tsjg.core.bean.MagPurchase;
 import com.tsjg.core.bean.MagPurchaseExample;
+import com.tsjg.core.bean.MagUserdefined;
+import com.tsjg.core.bean.MagUserdefinedExample;
 import com.tsjg.core.bean.Message;
 import com.tsjg.core.bean.MyBookPurchase;
 import com.tsjg.core.bean.User;
@@ -40,10 +43,14 @@ import com.tsjg.core.dao.BookCategoryMapper;
 import com.tsjg.core.dao.BookMapper;
 import com.tsjg.core.dao.BookPurchaseMapper;
 import com.tsjg.core.dao.BookSubjectMapper;
+import com.tsjg.core.dao.BookUserdefinedMapper;
 import com.tsjg.core.dao.MagCategoryMapper;
 import com.tsjg.core.dao.MagMapper;
 import com.tsjg.core.dao.MagPurchaseMapper;
+import com.tsjg.core.dao.MagUserdefinedMapper;
 import com.tsjg.core.dao.MessageMapper;
+import com.tsjg.core.dao.MyBookUdMapper;
+import com.tsjg.core.dao.MyMagUdMapper;
 import com.tsjg.core.dao.UserMapper;
 import com.tsjg.core.service.BookService;
 import com.tsjg.core.service.UserService;
@@ -75,6 +82,14 @@ public class AdminController {
 	private MagPurchaseMapper magPurchaseMapper;
 	@Autowired
 	private MessageMapper messageMapper;
+	@Autowired
+	private BookUserdefinedMapper bookUserdefinedMapper;
+	@Autowired
+	private MagUserdefinedMapper magUserdefinedMapper;
+	@Autowired
+	private MyBookUdMapper myBookUdMapper;
+	@Autowired
+	private MyMagUdMapper myMagUdMapper;
 	
 	@RequestMapping(value = "/toTop.do")
 	public String toTop(){
@@ -178,7 +193,7 @@ public class AdminController {
 	@RequestMapping(value = "/deleteBatchBook.do")
 	public String deleteBatchBook(String[] checkisbn,HttpServletResponse response){
 		bookService.deleteBatchBook(checkisbn);
-		return "redirect:/"+ Constans.PROJECT_NAME +"/backpage/toRight.do";
+		return "redirect:/backpage/toRight.do";
 	}
 	
 	@RequestMapping(value = "/deleteOneBook.do")
@@ -317,7 +332,7 @@ public class AdminController {
 	@RequestMapping(value = "/deleteBatchMag.do")
 	public String deleteBatchMag(String[] checkissn,HttpServletResponse response){
 		bookService.deleteBatchMag(checkissn);
-		return "redirect:/"+ Constans.PROJECT_NAME +"/backpage/toMag.do";
+		return "redirect:/backpage/toMag.do";
 	}
 	
 	@RequestMapping(value = "/deleteOneMag.do")
@@ -415,13 +430,47 @@ public class AdminController {
 	@RequestMapping(value = "/deleteBooks.do")
 	public String deleteBooks(String[] checkisbn,HttpServletResponse response){
 		bookService.deleteBooks(checkisbn);
-		return "redirect:/"+ Constans.PROJECT_NAME + "/backpage/toBookPurchase.do";
+		return "redirect:/backpage/toBookPurchase.do";
 	}
 	
 	@RequestMapping(value = "/deleteMags.do")
 	public String deleteMags(String[] checkissn,HttpServletResponse response){
 		bookService.deleteMags(checkissn);
-		return "redirect:/"+ Constans.PROJECT_NAME + "/backpage/toMagPurchase.do";
+		return "redirect:/backpage/toMagPurchase.do";
+	}
+	
+	@RequestMapping(value = "/deleteBookZj.do")
+	public void deleteBookZj(String isbn,HttpServletResponse response){
+		BookUserdefinedExample bookUserdefinedExample = new BookUserdefinedExample();
+		bookUserdefinedExample.createCriteria().andIsbnEqualTo(isbn);
+		int result = bookUserdefinedMapper.deleteByExample(bookUserdefinedExample);
+		
+		JSONObject jo = new JSONObject();
+		jo.put("result", result);
+		ResponseUtils.renderJson(response, jo.toString());
+	}
+	
+	@RequestMapping(value = "/deleteMagZj.do")
+	public void deleteMagZj(String magissn,HttpServletResponse response){
+		MagUserdefinedExample magUserdefinedExample = new MagUserdefinedExample();
+		magUserdefinedExample.createCriteria().andMagIssnEqualTo(magissn);
+		int result = magUserdefinedMapper.deleteByExample(magUserdefinedExample);
+		
+		JSONObject jo = new JSONObject();
+		jo.put("result", result);
+		ResponseUtils.renderJson(response, jo.toString());
+	}
+	
+	@RequestMapping(value = "/deleteBooksZj.do")
+	public String deleteBooksZj(String[] checkisbn,HttpServletResponse response){
+		myBookUdMapper.deleteBooksZj(checkisbn);
+		return "redirect:/backpage/toBookZj.do";
+	}
+	
+	@RequestMapping(value = "/deleteMagsZj.do")
+	public String deleteMagsZj(String[] checkissn,HttpServletResponse response){
+		myMagUdMapper.deleteMagsZj(checkissn);
+		return "redirect:/backpage/toMagZj.do";
 	}
 	
 	@RequestMapping(value = "/exportBooks.do")
@@ -466,11 +515,14 @@ public class AdminController {
 	
 	@RequestMapping(value = "/toMagZj.do")
 	public String toMagZj(ModelMap model,Integer pageNo){
+		MagUserdefined magUserdefined = new MagUserdefined();
+		magUserdefined.setPageNo(Pagination.cpn(pageNo));
+		magUserdefined.setPageSize(14);
 		
-		/*String url = "/tsjg/backpage/toBookPurchase.do";
-		Pagination pagination = bookService.selectPurchaseBookList(mybookPurchase);
+		String url = "/"+ Constans.PROJECT_NAME +"/backpage/toMagZj.do";
+		Pagination pagination = userService.findUserMag(magUserdefined);
 		pagination.pageView(url, null);
-		model.addAttribute("pagination", pagination);*/
+		model.addAttribute("pagination", pagination);
 		return "magzj";
 	}
 }

@@ -8,4 +8,6 @@ public interface MyBookUdMapper {
 	int findUserBookCount();
 	
 	List<BookUserdefined> findUserBook(BookUserdefined bookUserdefined);
+	
+	void deleteBooksZj(String[] isbn);
 }

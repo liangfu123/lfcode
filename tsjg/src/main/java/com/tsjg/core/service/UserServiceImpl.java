@@ -10,9 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 import cn.itcast.common.page.Pagination;
 
 import com.tsjg.core.bean.BookUserdefined;
+import com.tsjg.core.bean.MagUserdefined;
 import com.tsjg.core.bean.User;
 import com.tsjg.core.bean.UserMessage;
 import com.tsjg.core.dao.MyBookUdMapper;
+import com.tsjg.core.dao.MyMagUdMapper;
 import com.tsjg.core.dao.UserMapper;
 import com.tsjg.core.dao.UserMessageMapper;
 
@@ -25,6 +27,8 @@ public class UserServiceImpl implements UserService {
 	private UserMessageMapper userMessageMapper;
 	@Resource
 	private MyBookUdMapper myBookUdMapper;
+	@Resource
+	private MyMagUdMapper myMagUdMapper;
 	
 	public Pagination findAllPage(User user) {
 		Pagination pagination = new Pagination(user.getPageNo(), user.getPageSize(), userMapper.findCountPage(user));
@@ -68,10 +72,17 @@ public class UserServiceImpl implements UserService {
 		return pagination;
 	}
 
+	public Pagination findUserMag(MagUserdefined magUserdefined) {
+		Pagination pagination = new Pagination(magUserdefined.getPageNo(), magUserdefined.getPageSize(), myMagUdMapper.findUserMagCount());
+		pagination.setList(myMagUdMapper.findUserMag(magUserdefined));
+		return pagination;
+	}
+	
 	public Pagination findUserReview(User user) {
 		Pagination pagination = new Pagination(user.getPageNo(), user.getPageSize(), userMapper.findCountUserReview(user));
 		pagination.setList(userMapper.findUserReview(user));
 		return pagination;
 	}
+
 
 }

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsjg.core.dao.MyMagUdMapper">
+  <resultMap id="BaseResultMap" type="com.tsjg.core.bean.MagUserdefined">
+    <id column="mag_userdefined_id" jdbcType="INTEGER" property="magUserdefinedId" />
+    <result column="mag_ud_title" jdbcType="VARCHAR" property="magUdTitle" />
+    <result column="mag_ud_competent" jdbcType="VARCHAR" property="magUdCompetent" />
+    <result column="mag_ud_hostunit" jdbcType="VARCHAR" property="magUdHostunit" />
+    <result column="mag_ud_mailnum" jdbcType="VARCHAR" property="magUdMailnum" />
+    <result column="mag_ud_cn" jdbcType="VARCHAR" property="magUdCn" />
+    <result column="mag_issn" jdbcType="VARCHAR" property="magIssn" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="mag_jg_time" jdbcType="TIMESTAMP" property="magJgTime" />
+    <result column="isget" jdbcType="INTEGER" property="isget" />
+  </resultMap>
+  
+  <sql id="limit">
+  	limit #{startRow},#{pageSize}
+  </sql>
+  <sql id="orderby">
+  	ORDER BY mag_jg_time
+  </sql>
+  
+  <select id="findUserMagCount" resultType="java.lang.Integer">
+  	SELECT COUNT(*) FROM mag_userdefined
+  </select>
+  
+  <select id="findUserMag" parameterType="com.tsjg.core.bean.MagUserdefined" resultMap="BaseResultMap">
+  	SELECT * FROM mag_userdefined
+  	<include refid="orderby"></include>
+  	<include refid="limit"></include>
+  </select>
+  
+  <delete id="deleteMagsZj" parameterType="java.lang.String">
+  	DELETE FROM mag_userdefined
+  	<where>
+  		mag_issn IN
+  		<foreach collection="array" item="magIssn" open="(" close=")" separator=",">
+  			#{magIssn}
+  		</foreach>
+  	</where>
+  </delete>
+</mapper>

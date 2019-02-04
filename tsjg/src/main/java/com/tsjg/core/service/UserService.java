@@ -2,16 +2,19 @@ package com.tsjg.core.service;
 
 import java.util.List;
 
+import cn.itcast.common.page.Pagination;
+
 import com.tsjg.core.bean.BookUserdefined;
+import com.tsjg.core.bean.MagUserdefined;
 import com.tsjg.core.bean.User;
 import com.tsjg.core.bean.UserMessage;
-
-import cn.itcast.common.page.Pagination;
 
 public interface UserService {
 	Pagination findUserReview(User user);
 	
 	Pagination findUserBook(BookUserdefined bookUserdefined);
+	
+	Pagination findUserMag(MagUserdefined magUserdefined);
 	
 	List<UserMessage> findUserAllMsg(Integer userId);
 	

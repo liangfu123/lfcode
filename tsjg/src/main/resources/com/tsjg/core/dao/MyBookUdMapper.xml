@@ -30,4 +30,13 @@
   	<include refid="limit"></include>
   </select>
   
+  <delete id="deleteBooksZj" parameterType="java.lang.String">
+  	DELETE FROM book_userdefined
+  	<where>
+  		isbn IN
+  		<foreach collection="array" item="isbn" open="(" close=")" separator=",">
+  			#{isbn}
+  		</foreach>
+  	</where>
+  </delete>
 </mapper>

@@ -11,7 +11,7 @@
 <title>期刊自荐</title>
 <script type="text/javascript">
 	function delOne(magissn){
-		var url = "${pageContext.request.contextPath}/backpage/deleteMag.do";
+		var url = "${pageContext.request.contextPath}/backpage/deleteMagZj.do";
 		var params = {"magissn":magissn};
 		$.post(url,params,function (data){
 			if(data.result == 1 ){
@@ -38,7 +38,7 @@
 			return false;
 		}
 		
-		$("#jvFormDel").attr("action","${pageContext.request.contextPath }/backpage/deleteMags.do");
+		$("#jvFormDel").attr("action","${pageContext.request.contextPath }/backpage/deleteMagsZj.do");
 		$("#jvFormDel").attr("method","post").submit();
 	}
 	
@@ -70,7 +70,7 @@
 							<a class="btn btn-default" href="javascript:void(0);" onclick="deletes()" role="button">删除</a>
 						</td>
 						<td width="70px">
-							<a class="btn btn-default" href="${pageContext.request.contextPath}/backpage/toMagPurchase.do" target="rightFrameBack" role="button">刷新</a>
+							<a class="btn btn-default" href="${pageContext.request.contextPath}/backpage/toMagZj.do" target="rightFrameBack" role="button">刷新</a>
 						</td>
 					</tr>
 				</table>
@@ -114,33 +114,30 @@
 							<td width="15px">
 								<div>
 								  <label>
-								    <input type="checkbox" name="checkissn" id="blankCheckbox" value="${entry.mag.magIssn }" aria-label="...">
+								    <input type="checkbox" name="checkissn" id="blankCheckbox" value="${entry.magIssn }" aria-label="...">
 								  </label>
 								</div>
 							</td>
 							<td>
-								<a href="javascript:void(0);" onclick="window.open('${pageContext.request.contextPath}/toMagDetails.shtml?issn=${entry.magIssn }')">${entry.mag.magTitle } </a>
+								${entry.magUdTitle }
 							</td>
 							<td>
-								${entry.mag.magHostunit }
+								${entry.magUdCompetent }
 							</td>
 							<td width="120px">
-								${entry.mag.magMailnum }
+								${entry.magUdHostunit }
 							</td>
 							<td>
-								${entry.mag.magIssn }
+								${entry.magUdMailnum }
 							</td>
 							<td>
-								${entry.mag.magCn }
+								${entry.magIssn }
 							</td>
 							<td>
-								${entry.mag.magPubcycle }
-							</td>
-							<td width="80px">
-								${entry.mag.magNum }
+								${entry.magUdCn }
 							</td>
 							<td width="55px">
-								<a href="javascript:void(0);" onclick="delOne('${entry.mag.magIssn }')" role="button">删除</a>
+								<a href="javascript:void(0);" onclick="delOne('${entry.magIssn }')" role="button">删除</a>
 							</td>
 						</tr>
 					</c:forEach>
