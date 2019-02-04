@@ -43,7 +43,7 @@
     		<table style="margin-top: 20px;">
     			<tr style="height: 25px;">
     			<td style="width: 130px;text-align: right;"><img src="${pageContext.request.contextPath}/img/style.png">&nbsp;&nbsp;<label>完善资料</label></td>
-    			<td style="width: 400px;text-align: right;">友情提示：完善所有个人信息才能进行图书荐购!</td>
+    			<td style="width: 520px;text-align: right;font-size: 12px;">友情提示：完善所有个人信息，并且信息真实有效，才能进行图书荐购!</td>
     			</tr>
     		</table>
     		<hr>
@@ -78,8 +78,8 @@
     		<br>
    			<div class="shenhe" >
    				<span>
-   					管理员审核个人资料结果：
-   				<c:if test="${user_session.isReview == 2}"><label style="color: red;">审核不通过，请检查个人资料是否属实！</label></c:if>
+   					管理员审核结果：
+   				<c:if test="${user_session.isReview == 2}"><label style="color: red;font-size: 12px;">审核不通过，可修改个人资料，联系管理员重新审核！</label></c:if>
 				<c:if test="${user_session.isReview == 1}">审核通过</c:if>
 				<c:if test="${user_session.isReview == 0}"><label style="color: orange;">待审核</label></c:if>
    				</span>

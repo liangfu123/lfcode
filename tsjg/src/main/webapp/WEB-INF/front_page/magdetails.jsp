@@ -95,8 +95,7 @@
 				<table class="book_details_button">
 					<tr>
 						<td>
-							<a class="btn btn-default" href="javascript:void(0);" onclick="jgBtn('${maginfo.magIssn }','${user_session.userId }')" role="button">荐购</a>&nbsp;&nbsp;
-							<a class="btn btn-default" href="javascript:void(0);" onclick="window.location.href='${pageContext.request.contextPath }/toMainFront.shtml'" role="button">返回</a>
+							<a class="btn btn-default mybtn" href="javascript:void(0);" onclick="jgBtn('${maginfo.magIssn }','${user_session.userId }')" role="button">荐购</a>&nbsp;&nbsp;
 						</td>
 					</tr>
 				</table>

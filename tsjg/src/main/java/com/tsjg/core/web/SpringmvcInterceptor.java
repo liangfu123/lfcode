@@ -21,6 +21,7 @@ public class SpringmvcInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse arg1,
 			Object arg2) throws Exception {
 		boolean flag = false;
+		boolean flag2 = false;
 		
 		User u = (User) sessionProvider.getAttribute(request, Constans.USER_SESSION);
 		User user = userMapper.selectByPrimaryKey(u.getUserId());
@@ -33,7 +34,10 @@ public class SpringmvcInterceptor implements HandlerInterceptor {
 			flag = true;
 		}
 		request.setAttribute("flag", flag);
-		
+		if(user.getIsReview().equals(2) || user.getIsReview().equals(0)){
+			flag2 = true;
+		}
+		request.setAttribute("flag2", flag2);
 		System.out.println("pre");
 		return true;
 	}

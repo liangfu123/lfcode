@@ -87,13 +87,18 @@ public class ReaderController {
 		List<MagJg> mgm = magJgMapper.selectByExample(magJgExample);
 		
 		boolean flag = (Boolean) request.getAttribute("flag");
+		boolean flag2 = (Boolean) request.getAttribute("flag2");
 		if(flag){
 			JSONObject jo = new JSONObject();
 			jo.put("msg", "您没有完善个人资料，请到个人中心完善资料后荐购！");
 			ResponseUtils.renderJson(response, jo.toString());
+		}else if(flag2){
+			JSONObject jo = new JSONObject();
+			jo.put("msg", "您的个人资料待审核或审核未通过，不能荐购！");
+			ResponseUtils.renderJson(response, jo.toString());
 		}else if(mgm  != null && !mgm.isEmpty()){
 			JSONObject jo = new JSONObject();
-			jo.put("msg", "你已推荐过此期刊，请勿重复荐购！");
+			jo.put("msg", "您已推荐过此期刊，请勿重复荐购！");
 			ResponseUtils.renderJson(response, jo.toString());
 		}else{
 			bookService.updateMagNum(magIssn);
@@ -127,9 +132,14 @@ public class ReaderController {
 		List<BookJg> bjm = bookJgMapper.selectByExample(bookJgExample);
 		
 		boolean flag = (Boolean) request.getAttribute("flag");
+		boolean flag2 = (Boolean) request.getAttribute("flag2");
 		if(flag){
 			JSONObject jo = new JSONObject();
 			jo.put("msg", "您没有完善个人资料，请到个人中心完善资料后荐购！");
+			ResponseUtils.renderJson(response, jo.toString());
+		}else if(flag2){
+			JSONObject jo = new JSONObject();
+			jo.put("msg", "您的个人资料待审核或审核未通过，不能荐购！");
 			ResponseUtils.renderJson(response, jo.toString());
 		}else if(bjm  != null && !bjm.isEmpty()){
 			JSONObject jo = new JSONObject();
@@ -239,11 +249,15 @@ public class ReaderController {
 		List<BookCollection> bc = bookCollectionMapper.selectByExample(bookCollectionExample);
 		
 		boolean flag = (Boolean) request.getAttribute("flag");
+		boolean flag2 = (Boolean) request.getAttribute("flag2");
 		if(flag){
 			ResponseUtils.renderText(response, "您没有完善个人资料，请到个人中心完善资料后荐购！");
 			return ;
 		}
-		
+		if(flag2){
+			ResponseUtils.renderText(response, "您的个人资料待审核或审核未通过，不能荐购！");
+			return ;
+		}
 		if(bc != null && !bc.isEmpty()){
 			ResponseUtils.renderText(response, "该书图书馆已有，可到图书馆阅读");
 			return ;
@@ -292,11 +306,15 @@ public class ReaderController {
 		List<MagCollection> mc = magCollectionMapper.selectByExample(magCollectionExample);
 		
 		boolean flag = (Boolean) request.getAttribute("flag");
+		boolean flag2 = (Boolean) request.getAttribute("flag2");
 		if(flag){
 			ResponseUtils.renderText(response, "您没有完善个人资料，请到个人中心完善资料后荐购！");
 			return ;
 		}
-		
+		if(flag2){
+			ResponseUtils.renderText(response, "您的个人资料待审核或审核未通过，不能荐购！");
+			return ;
+		}
 		if(mc != null && !mc.isEmpty()){
 			ResponseUtils.renderText(response, "该期刊图书馆已有，可到图书馆阅读");
 			return ;
