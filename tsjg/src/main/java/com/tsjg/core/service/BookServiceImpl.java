@@ -30,8 +30,10 @@ import com.tsjg.core.dao.MagMapper;
 import com.tsjg.core.dao.MagUserdefinedMapper;
 import com.tsjg.core.dao.MyBookMapper;
 import com.tsjg.core.dao.MyBookPurchaseMapper;
+import com.tsjg.core.dao.MyBookUdMapper;
 import com.tsjg.core.dao.MyMagMapper;
 import com.tsjg.core.dao.MyMagPurchaseMapper;
+import com.tsjg.core.dao.MyMagUdMapper;
 
 @Service
 @Transactional
@@ -62,6 +64,10 @@ public class BookServiceImpl implements BookService {
 	private BookJgMapper bookJgMapper;
 	@Resource
 	private MagJgMapper magJgMapper;
+	@Resource
+	private MyBookUdMapper myBookUdMapper;
+	@Resource
+	private MyMagUdMapper myMagUdMapper;
 	
 	public boolean batchImportBook(MultipartFile file) throws Exception {
 		boolean b = false;
@@ -137,22 +143,41 @@ public class BookServiceImpl implements BookService {
 
 	public String exportBooks() throws Exception {
 		List<MyBookPurchase> booklist = myBookPurchaseMapper.selectPurchaseBookAll();
-		if(booklist == null){
-			throw new Exception("荐购书目为空");
-		}		
-		String url = excelUtil.writeExcelBook(booklist);
-		return url;
+		if(booklist == null || booklist.size() == 0){
+			return "荐购书目为空";
+		}else{		
+			return "导出成功!保存在"+ excelUtil.writeExcelBook(booklist);
+		}
 	}
 
 	public String exportMags() throws Exception {
 		List<MagPurchase> maglist = myMagPurchaseMapper.selectPurchaseMagAll();
-		if(maglist == null){
-			throw new Exception("荐购书目为空");
+		if(maglist == null || maglist.size() == 0){
+			return "荐购书目为空";
+		}else{
+			return "导出成功!保存在"+ excelUtil.writeExcelMag(maglist);
 		}
-		String url = excelUtil.writeExcelMag(maglist);
-		return url;
 	}
 
+
+	public String exportBooksZj() throws Exception {
+		List<BookUserdefined> booklists = myBookUdMapper.findBooksZjAll();
+		if(booklists == null || booklists.size() == 0){
+			return "用户自荐书目为空";
+		}else{
+			return "导出成功!保存在"+ excelUtil.writeExcelBookZj(booklists);
+		}
+	}
+
+	public String exportMagsZj() throws Exception {
+		List<MagUserdefined> maglists = myMagUdMapper.findMagsZjAll();
+		if(maglists == null || maglists.size() == 0){
+			return "用户自荐书目为空";
+		}else{
+			return "导出成功!保存在"+ excelUtil.writeExcelMagZj(maglists);
+		}
+	}
+	
 	public Pagination findBookSubject(Book book) {
 		Pagination pagination = new Pagination(book.getPageNo(), book.getPageSize(), myBookMapper.findBookSubjectCount(book.getBookSubjectId()));
 		pagination.setList(myBookMapper.findBookSubject(book));

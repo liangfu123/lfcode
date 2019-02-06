@@ -20,6 +20,10 @@
   	ORDER BY book_jg_time
   </sql>
   
+  <select id="findBooksZjAll" resultMap="BaseResultMap">
+  	SELECT * FROM book_userdefined
+  </select>
+  
   <select id="findUserBookCount" resultType="java.lang.Integer">
   	SELECT COUNT(*) FROM book_userdefined
   </select>

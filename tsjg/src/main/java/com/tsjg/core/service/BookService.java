@@ -71,6 +71,10 @@ public interface BookService {
 	
 	String exportBooks() throws Exception;
 	
+	String exportMagsZj() throws Exception;
+	
+	String exportBooksZj() throws Exception;
+	
 	boolean batchImportBook(MultipartFile file) throws Exception;
 	
 	boolean batchImportMag(MultipartFile file) throws Exception;

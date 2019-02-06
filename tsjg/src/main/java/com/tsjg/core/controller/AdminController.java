@@ -489,6 +489,22 @@ public class AdminController {
 		ResponseUtils.renderJson(response, jo.toString());
 	}
 	
+	@RequestMapping(value = "/exportBooksZj.do")
+	public void exportBooksZj(HttpServletResponse response) throws Exception{
+		String url = bookService.exportBooksZj();
+		JSONObject jo = new JSONObject();
+		jo.put("url", url);
+		ResponseUtils.renderJson(response, jo.toString());
+	}
+	
+	@RequestMapping(value = "/exportMagsZj.do")
+	public void exportMagsZj(HttpServletResponse response) throws Exception{
+		String url = bookService.exportMagsZj();
+		JSONObject jo = new JSONObject();
+		jo.put("url", url);
+		ResponseUtils.renderJson(response, jo.toString());
+	}
+	
 	@RequestMapping(value = "/toMagPurchase.do")
 	public String toMagPurchase(ModelMap model,Integer pageNo){
 		MagPurchase magPurchase = new MagPurchase();

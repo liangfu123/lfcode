@@ -43,10 +43,10 @@
 	}
 	
 	function exports(){
-		var url = "${pageContext.request.contextPath}/backpage/exportMags.do";
+		var url = "${pageContext.request.contextPath}/backpage/exportMagsZj.do";
 		$.post(url,function (data){
 			if(data.url != null){
-				alert("导出成功!保存在"+ data.url);
+				alert(data.url);
 			}else{
 				alert("导出失败");
 			}

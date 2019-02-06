@@ -21,6 +21,10 @@
   	ORDER BY mag_jg_time
   </sql>
   
+  <select id="findMagsZjAll" resultMap="BaseResultMap">
+  	SELECT * FROM mag_userdefined
+  </select>
+  
   <select id="findUserMagCount" resultType="java.lang.Integer">
   	SELECT COUNT(*) FROM mag_userdefined
   </select>

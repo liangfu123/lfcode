@@ -22,8 +22,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.tsjg.core.bean.Book;
+import com.tsjg.core.bean.BookUserdefined;
 import com.tsjg.core.bean.Mag;
 import com.tsjg.core.bean.MagPurchase;
+import com.tsjg.core.bean.MagUserdefined;
 import com.tsjg.core.bean.MyBookPurchase;
 
 public class ExcelUtilImpl implements ExcelUtil {
@@ -32,7 +34,7 @@ public class ExcelUtilImpl implements ExcelUtil {
     private int totalRows = 0;  
     //总条数
     private int totalCells = 0;
-	
+	//导入图书
 	public List<Book> readExcelBook(MultipartFile file) throws Exception {
 		Workbook workbook = null;//相当于一个excel
 		Sheet sheet1 = null;
@@ -102,7 +104,7 @@ public class ExcelUtilImpl implements ExcelUtil {
        
        return bookList;
 	}
-
+	//导入期刊
 	public List<Mag> readExcelMag(MultipartFile file) throws Exception {
 		Workbook workbook = null;//相当于一个excel
 		Sheet sheet1 = null;
@@ -172,7 +174,7 @@ public class ExcelUtilImpl implements ExcelUtil {
        
        return magList;
 	}
-
+	//导出图书
 	public String writeExcelBook(List<MyBookPurchase> list) throws IOException {
 		
 		HSSFWorkbook workbook = new HSSFWorkbook();//新建excle
@@ -208,7 +210,7 @@ public class ExcelUtilImpl implements ExcelUtil {
 		
 		return url;
 	}
-
+	//导出期刊
 	public String writeExcelMag(List<MagPurchase> list) throws IOException {
 		HSSFWorkbook workbook = new HSSFWorkbook();//新建excel
 		HSSFSheet sheet = workbook.createSheet();//新建一个Sheet
@@ -248,5 +250,69 @@ public class ExcelUtilImpl implements ExcelUtil {
 		out.close();
 		return url;
 	}
-
+	//导出自荐图书
+	public String writeExcelBookZj(List<BookUserdefined> list) throws IOException {
+		HSSFWorkbook workbook = new HSSFWorkbook();//新建excle
+		HSSFSheet sheet = workbook.createSheet();//新建一个Sheet
+		HSSFRow row = sheet.createRow(0);//第一行
+		row.createCell(0).setCellValue("题名");//第一行第一列的值
+		row.createCell(1).setCellValue("作者");
+		row.createCell(2).setCellValue("ISBN");
+		row.createCell(3).setCellValue("出版社");
+		row.createCell(4).setCellValue("出版时间");
+		
+		for(BookUserdefined bookUserdefined : list){
+			//依次建立一行
+			HSSFRow r = sheet.createRow(sheet.getLastRowNum()+1);
+			r.createCell(0).setCellValue(bookUserdefined.getBookUdName());
+			r.createCell(1).setCellValue(bookUserdefined.getBookUdAuthor());
+			r.createCell(2).setCellValue(bookUserdefined.getIsbn());
+			r.createCell(3).setCellValue(bookUserdefined.getBookUdPublish());
+			r.createCell(4).setCellValue(bookUserdefined.getBookUdPubtime());
+		}
+		SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+		String url = "e:\\"+"bookZj"+format.format(new Date()) + ".xlsx";
+		//得到输出流
+		OutputStream out = new FileOutputStream(url);
+		//写出数据
+		workbook.write(out);
+		
+		out.close();
+		
+		return url;
+	}
+	//导出自荐期刊
+	public String writeExcelMagZj(List<MagUserdefined> list) throws IOException {
+		HSSFWorkbook workbook = new HSSFWorkbook();//新建excel
+		HSSFSheet sheet = workbook.createSheet();//新建一个Sheet
+		HSSFRow row = sheet.createRow(0);//第一行
+		row.createCell(0).setCellValue("期刊标题");//第一行第一列的值
+		row.createCell(1).setCellValue("主管单位");
+		row.createCell(2).setCellValue("主办单位");
+		row.createCell(3).setCellValue("邮发代号");
+		row.createCell(4).setCellValue("ISSN");
+		row.createCell(5).setCellValue("国内刊号");
+		
+		for(MagUserdefined magUserdefined : list){
+			//依次建立一行
+			HSSFRow r = sheet.createRow(sheet.getLastRowNum()+1);
+			r.createCell(0).setCellValue(magUserdefined.getMagUdTitle());
+			r.createCell(1).setCellValue(magUserdefined.getMagUdCompetent());
+			r.createCell(2).setCellValue(magUserdefined.getMagUdHostunit());
+			r.createCell(3).setCellValue(magUserdefined.getMagUdMailnum());
+			r.createCell(4).setCellValue(magUserdefined.getMagIssn());
+			r.createCell(5).setCellValue(magUserdefined.getMagUdCn());
+		}
+		
+		SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+		String url = "e:\\"+"magZj"+format.format(new Date()) + ".xlsx";
+		
+		//得到输出流
+		OutputStream out = new FileOutputStream(url);
+		//写出数据
+		workbook.write(out);
+		
+		out.close();
+		return url;
+	}
 }

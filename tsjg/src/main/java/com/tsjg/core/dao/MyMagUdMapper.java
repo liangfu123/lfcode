@@ -10,4 +10,6 @@ public interface MyMagUdMapper {
 	List<MagUserdefined> findUserMag(MagUserdefined magUserdefined);
 	
 	void deleteMagsZj(String[] magIssn);
+	
+	List<MagUserdefined> findMagsZjAll();
 }
